@@ -9,6 +9,9 @@ parameters:
     locale: en
 
 framework:
+    #Deactivated profiler
+    profiler:
+        collect: false
     #esi: ~
     #translator: { fallbacks: ['%locale%'] }
     secret: '%secret%'

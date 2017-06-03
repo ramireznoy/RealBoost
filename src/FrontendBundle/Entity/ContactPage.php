@@ -3,6 +3,8 @@
 namespace FrontendBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use CoreBundle\Entity\Realtor;
 
 /**
  * MenuItem
@@ -10,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="front_contactpages")
  * @ORM\Entity(repositoryClass="FrontendBundle\Repository\MenuItemRepository")
  */
-class ContacPage
+class ContactPage
 {
     /**
      * @var int
@@ -22,12 +24,33 @@ class ContacPage
     private $id;
     
     /**
+     * One Page can be used by many realtors.
+     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\Realtor", mappedBy="realtor")
+     */
+    private $realtors;
+    
+    /**
+     * Constructor for ContactPage
+     */
+    public function __construct() {
+        $this->realtors = new ArrayCollection();
+    }
+    
+    /**
      * Get Id
      * 
      * @return type
      */
     public function getId() {
         return $this->id;
+    }
+    
+    /**
+     * 
+     * @return \Doctrine\Common\Collections\Collection|Realtor[]
+     */
+    public function getRealtors() {
+        return $this->realtors;
     }
     
 }

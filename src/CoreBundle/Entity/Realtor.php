@@ -4,6 +4,8 @@ namespace CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use AdminBundle\Entity\SystemUser;
+use Doctrine\Common\Collections\ArrayCollection;
+use CoreBundle\Entity\Contact;
 
 /**
  * Realtor
@@ -14,46 +16,33 @@ use AdminBundle\Entity\SystemUser;
 class Realtor extends SystemUser {
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="group_position", type="string", length=100, unique=false)
-     */
-    private $groupposition;
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="address", type="string", length=255, unique=true)
-     */
-    private $address;
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="amount", type="decimal", precision=10, scale=2)
-     */
-    private $amount;
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="payment", type="decimal", precision=10, scale=2)
-     */
-    private $payment;
-    
-    /**
      * @var RealtorGroup
      *
      * @ORM\ManyToOne(targetEntity="RealtorGroup",inversedBy="realtors")
-     * @ORM\JoinColumn(name="paymentgroup", referencedColumnName="id")
+     * @ORM\JoinColumn(name="agency", referencedColumnName="id")
      */
-    private $paymentgroup;
+    private $realtorgroup;
     
     /**
-     * One Realtor has Many Charges.
+     * @var ContactPage
+     *
+     * @ORM\ManyToOne(targetEntity="FrontendBundle\Entity\ContactPage",inversedBy="realtors")
+     * @ORM\JoinColumn(name="contact_page", referencedColumnName="id")
+     */
+    private $contactpage;
+    
+    /**
+     * @var \Doctrine\Common\Collections\Collection|Contacts[]
+     *
+     * @ORM\ManyToMany(targetEntity="Contact", mappedBy="realtors")
+     */
+    private $contacts;
+    
+    /**
+     * One Realtor has Many Sales.
      * @ORM\OneToMany(targetEntity="Payment", mappedBy="realtor")
      */
-    private $charges;
+    private $sales;
 
     
     /**
@@ -61,99 +50,83 @@ class Realtor extends SystemUser {
      */
     public function __construct() {
         parent::__construct();
-        
+        $this->groups = new ArrayCollection();
+        $this->sales = new ArrayCollection();
     }
     
     /**
-     * Get realtor position in the group
+     * Add Contact
      * 
-     * @return string
-     */
-    public function getGroupposition() {
-        return $this->groupposition;
-    }
-
-    /**
-     * Set realtor position in the group
-     * 
-     * @param type $groupposition
+     * @param RealtorGroup $realtorgroup
      * @return Realtor
      */
-    public function setGroupposition($groupposition) {
-        $this->groupposition = $groupposition;
+    public function setGroup(RealtorGroup $realtorgroup) {
+        $this->realtorgroup = $realtorgroup;
         
         return $this;
     }
-        
-    /**
-     * Set address
-     *
-     * @param string $address
-     *
-     * @return Realtor
-     */
-    public function setAddress($address) {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    /**
-     * Get address
-     *
-     * @return string
-     */
-    public function getAddress() {
-        return $this->address;
-    }
     
-    public function getPayment() {
-        return $this->payment;
-    }
-
-    public function setAmount($amount) {
-        $this->amount = $amount;
-        return $this;
-    }
-    
-    public function getAmount() {
-        return $this->amount;
-    }
-
-    public function setPayment($payment) {
-        $this->payment = $payment;
-        return $this;
-    }
-
     /**
-     * Get payment group
+     * Get Realtor group
      * 
      * @return RealtorGroup
      */
-    public function getPaymentgroup() {
-        return $this->paymentgroup;
+    public function getRealtorgroup() {
+        return $this->realtorgroup;
     }
 
     /**
-     * Set payment group
+     * Set Realtor group
      * 
-     * @param RealtorGroup $paymentgroup
+     * @param RealtorGroup $realtorgroup
      * @return Realtor
      */
-    public function setPaymentgroup(RealtorGroup $paymentgroup) {
-        $this->paymentgroup = $paymentgroup;
+    public function setRealtorgroup(RealtorGroup $realtorgroup) {
+        $this->realtorgroup = $realtorgroup;
         
         return $this;
     }
     
-    public function getCharges() {
-        return $this->charges;
+    /**
+     * @return \Doctrine\Common\Collections\Collection|Contact[]
+     */
+    public function getContacts() {
+        return $this->contacts;
+    }
+
+    /**
+     * Add Contact
+     * 
+     * @param Contact $contact
+     * @return Realtor
+     */
+    public function addContact(Contact $contact) {
+        if ($this->contacts->contains($contact)) {
+            return $this;
+        }
+        $this->contacts->add($contact);
+        $contact->addRealtor($this);
+        return $this;
+    }
+
+    /**
+     * @param Contact $contact
+     */
+    public function removeContact(Contact $contact) {
+        if (!$this->contacts->contains($contact)) {
+            return;
+        }
+        $this->contacts->removeElement($contact);
+    }
+    
+    public function getSales() {
+        return $this->sales;
     }
     
     public function getUnpaidChargesCount() {
         $count = 0;
-        foreach ($this->charges as $charge) {
-            if (!$charge->isPayed()) {
+        foreach ($this->sales as $sell) {
+            if (!$sell->isPayed()) {
                 $count = $count + 1;
             }
         }

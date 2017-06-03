@@ -110,11 +110,8 @@ class ViewsController extends Controller {
         try {
             $em = $this->getDoctrine()->getManager();
             $groups = $em->getRepository('AdminBundle\Entity\UserGroup')->findBy(array('enabled' => true));
-            $paymentgroups = $em->getRepository('CoreBundle\Entity\ClientGroup')->findAll();
             $user_id = $request->get('id');
-            if (empty($user_id)) {
-                return $this->render('AdminBundle:Forms:user.html.twig', array('groups' => $groups, 'paymentgroups' => $paymentgroups));
-            } else {
+            if (!empty($user_id)) {
                 $user = $em->getRepository('AdminBundle\Entity\SystemUser')->find($user_id);
                 if ($user === null) {
                     return $this->render('AdminBundle:Admin:error.html.twig', array('cause' => 'No se encontró el usuario solicitado'));
@@ -170,13 +167,6 @@ class ViewsController extends Controller {
             $clientgroup_id = $request->get('id');
             if (empty($clientgroup_id)) {
                 return $this->render('AdminBundle:Forms:clientgroup.html.twig', array('advisors' => $advisors));
-            } else {
-                $clientgroup = $em->getRepository('CoreBundle\Entity\ClientGroup')->find($clientgroup_id);
-                if ($clientgroup === null) {
-                    return $this->render('AdminBundle:Admin:error.html.twig', array('cause' => 'No se encontró el grupo de usuarios solicitado'));
-                } else {
-                    return $this->render('AdminBundle:Forms:clientgroup.html.twig', array('clientgroup' => $clientgroup, 'advisors' => $advisors));
-                }
             }
         } catch (\Exception $ex) {
             return $this->render('AdminBundle:Admin:error.html.twig', array('cause' => $ex->getMessage()));

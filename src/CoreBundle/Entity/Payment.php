@@ -107,20 +107,20 @@ class Payment
     private $weekstopay;
     
     /**
-     * @var Client
+     * @var Realtor
      *
-     * @ORM\ManyToOne(targetEntity="Client", inversedBy="charges")
-     * @ORM\JoinColumn(name="client", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Realtor", inversedBy="charges")
+     * @ORM\JoinColumn(name="realtor", referencedColumnName="id")
      */
-    private $client;
+    private $realtor;
     
     /**
-     * @var Advisor
+     * @var Agency
      *
-     * @ORM\ManyToOne(targetEntity="Advisor", inversedBy="payments")
-     * @ORM\JoinColumn(name="advisor", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Agency", inversedBy="payments")
+     * @ORM\JoinColumn(name="agency", referencedColumnName="id")
      */
-    private $advisor;
+    private $agency;
     
     /**
      * @var string
@@ -318,46 +318,46 @@ class Payment
     }
     
     /**
-     * Get Client
+     * Get Realtor
      * 
-     * @return Client
+     * @return Realtor
      */
-    public function getClient() {
-        return $this->client;
+    public function getRealtor() {
+        return $this->realtor;
     }
 
     /**
-     * Set Client
+     * Set Realtor
      * 
-     * @param Client $client
+     * @param Realtor $realtor
      * @return Payment
      */
-    public function setClient(Client $client) {
-        $this->client = $client;
+    public function setRealtor(Realtor $realtor) {
+        $this->realtor = $realtor;
         
         return $this;
     }
     
     /**
-     * Set advisor
+     * Set agency
      *
-     * @param Advisor $advisor
+     * @param Agency $agency
      *
      * @return Payment
      */
-    public function setAdvisor(Advisor $advisor) {
-        $this->advisor = $advisor;
+    public function setAgency(Agency $agency) {
+        $this->agency = $agency;
 
         return $this;
     }
 
     /**
-     * Get advisor
+     * Get agency
      *
-     * @return Advisor
+     * @return Agency
      */
-    public function getAdvisor() {
-        return $this->advisor;
+    public function getAgency() {
+        return $this->agency;
     }
     
     public function getDebt() {

@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * ClientGroup
+ * RealtorGroup
  *
- * @ORM\Table(name="core_clientgroups")
- * @ORM\Entity(repositoryClass="CoreBundle\Repository\ClientGroupRepository")
+ * @ORM\Table(name="core_realtorgroups")
+ * @ORM\Entity(repositoryClass="CoreBundle\Repository\RealtorGroupRepository")
  */
-class ClientGroup {
+class RealtorGroup {
 
     /**
      * @var int
@@ -65,26 +65,26 @@ class ClientGroup {
     private $address;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection|Client[]
+     * @var \Doctrine\Common\Collections\Collection|Realtor[]
      *
-     * One ClientGroup has Many Clients.
-     * @ORM\OneToMany(targetEntity="Client", mappedBy="paymentgroup", cascade={"persist", "remove"})
+     * One RealtorGroup has Many Realtors.
+     * @ORM\OneToMany(targetEntity="Realtor", mappedBy="paymentgroup", cascade={"persist", "remove"})
      */
-    private $clients;
+    private $realtors;
 
     /**
-     * @var Advisor
+     * @var Agency
      *
-     * @ORM\ManyToOne(targetEntity="Advisor", inversedBy="clientgroups")
-     * @ORM\JoinColumn(name="advisor", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Agency", inversedBy="realtorgroups")
+     * @ORM\JoinColumn(name="agency", referencedColumnName="id")
      */
-    private $advisor;
+    private $agency;
 
     /**
-     * Constructor for ClientGroup
+     * Constructor for RealtorGroup
      */
     public function __construct() {
-        $this->clients = new ArrayCollection();
+        $this->realtors = new ArrayCollection();
     }
 
     /**
@@ -101,7 +101,7 @@ class ClientGroup {
      *
      * @param string $name
      *
-     * @return ClientGroup
+     * @return RealtorGroup
      */
     public function setName($name) {
         $this->name = $name;
@@ -123,7 +123,7 @@ class ClientGroup {
      *
      * @param string $amount
      *
-     * @return ClientGroup
+     * @return RealtorGroup
      */
     public function setAmount($amount) {
         $this->amount = $amount;
@@ -145,7 +145,7 @@ class ClientGroup {
      *
      * @param string $address
      *
-     * @return ClientGroup
+     * @return RealtorGroup
      */
     public function setAddress($address) {
         $this->address = $address;
@@ -185,7 +185,7 @@ class ClientGroup {
      *
      * @param \DateTime $reunion
      *
-     * @return ClientGroup
+     * @return RealtorGroup
      */
     public function setReunion($reunion) {
         $this->reunion = $reunion;
@@ -203,59 +203,59 @@ class ClientGroup {
     }
 
     /**
-     * Get clients
+     * Get realtors
      *
-     * @return \Doctrine\Common\Collections\Collection|Client[]
+     * @return \Doctrine\Common\Collections\Collection|Realtor[]
      */
-    public function getClients() {
-        return $this->clients;
+    public function getRealtors() {
+        return $this->realtors;
     }
 
     /**
-     * @param Client $client
+     * @param Realtor $realtor
      */
-    public function addClient(Client $client) {
-        if ($this->clients->contains($client)) {
+    public function addRealtor(Realtor $realtor) {
+        if ($this->realtors->contains($realtor)) {
             return;
         }
-        $client->setPaymentgroup($this);
-        $this->clients->add($client);
+        $realtor->setPaymentgroup($this);
+        $this->realtors->add($realtor);
     }
 
     /**
-     * @param Client $client
+     * @param Realtor $realtor
      */
-    public function removeClient(Client $client) {
-        if (!$this->clients->contains($client)) {
+    public function removeRealtor(Realtor $realtor) {
+        if (!$this->realtors->contains($realtor)) {
             return;
         }
-        $this->clients->removeElement($client);
+        $this->realtors->removeElement($realtor);
     }
 
     /**
-     * Get Advisor
+     * Get Agency
      *
-     * @return Advisor
+     * @return Agency
      */
-    public function getAdvisor() {
-        return $this->advisor;
+    public function getAgency() {
+        return $this->agency;
     }
 
     /**
-     * Set Advisor
+     * Set Agency
      *
-     * @param Advisor $advisor
-     * @return ClientGroup
+     * @param Agency $agency
+     * @return RealtorGroup
      */
-    public function setAdvisor(Advisor $advisor) {
-        $this->advisor = $advisor;
+    public function setAgency(Agency $agency) {
+        $this->agency = $agency;
 
         return $this;
     }
     
     public function isPossitionAssigned($position) {
-        $clients = $this->clients;
-        foreach($clients as $c) {
+        $realtors = $this->realtors;
+        foreach($realtors as $c) {
             if ($c->getGroupposition() === $position) {
                 return true;
             }
@@ -265,8 +265,8 @@ class ClientGroup {
     
     public function getPayPendingCount($date) {
         $count = 0;
-        $clients = $this->clients;
-        foreach($clients as $c) {
+        $realtors = $this->realtors;
+        foreach($realtors as $c) {
             $count = $count + $c->getUnpaidChargesCount($date);
         }
         return $count;

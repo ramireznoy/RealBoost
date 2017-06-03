@@ -4,15 +4,14 @@ namespace CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use AdminBundle\Entity\SystemUser;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Client
+ * Realtor
  *
- * @ORM\Table(name="core_clients")
- * @ORM\Entity(repositoryClass="CoreBundle\Repository\ClientRepository")
+ * @ORM\Table(name="core_realtors")
+ * @ORM\Entity(repositoryClass="CoreBundle\Repository\RealtorRepository")
  */
-class Client extends SystemUser {
+class Realtor extends SystemUser {
 
     /**
      * @var string
@@ -43,22 +42,22 @@ class Client extends SystemUser {
     private $payment;
     
     /**
-     * @var ClientGroup
+     * @var RealtorGroup
      *
-     * @ORM\ManyToOne(targetEntity="ClientGroup",inversedBy="clients")
+     * @ORM\ManyToOne(targetEntity="RealtorGroup",inversedBy="realtors")
      * @ORM\JoinColumn(name="paymentgroup", referencedColumnName="id")
      */
     private $paymentgroup;
     
     /**
-     * One Client has Many Charges.
-     * @ORM\OneToMany(targetEntity="Payment", mappedBy="client")
+     * One Realtor has Many Charges.
+     * @ORM\OneToMany(targetEntity="Payment", mappedBy="realtor")
      */
     private $charges;
 
     
     /**
-     * Constructor for Client
+     * Constructor for Realtor
      */
     public function __construct() {
         parent::__construct();
@@ -66,7 +65,7 @@ class Client extends SystemUser {
     }
     
     /**
-     * Get client position in the group
+     * Get realtor position in the group
      * 
      * @return string
      */
@@ -75,10 +74,10 @@ class Client extends SystemUser {
     }
 
     /**
-     * Set client position in the group
+     * Set realtor position in the group
      * 
      * @param type $groupposition
-     * @return Client
+     * @return Realtor
      */
     public function setGroupposition($groupposition) {
         $this->groupposition = $groupposition;
@@ -91,7 +90,7 @@ class Client extends SystemUser {
      *
      * @param string $address
      *
-     * @return Client
+     * @return Realtor
      */
     public function setAddress($address) {
         $this->address = $address;
@@ -129,7 +128,7 @@ class Client extends SystemUser {
     /**
      * Get payment group
      * 
-     * @return ClientGroup
+     * @return RealtorGroup
      */
     public function getPaymentgroup() {
         return $this->paymentgroup;
@@ -138,10 +137,10 @@ class Client extends SystemUser {
     /**
      * Set payment group
      * 
-     * @param ClientGroup $paymentgroup
-     * @return Client
+     * @param RealtorGroup $paymentgroup
+     * @return Realtor
      */
-    public function setPaymentgroup(ClientGroup $paymentgroup) {
+    public function setPaymentgroup(RealtorGroup $paymentgroup) {
         $this->paymentgroup = $paymentgroup;
         
         return $this;

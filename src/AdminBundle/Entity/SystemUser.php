@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="user_type", type="string")
  * @ORM\DiscriminatorMap(
- *     {"system"="SystemUser", "client"="\CoreBundle\Entity\Client", "advisor"="\CoreBundle\Entity\Advisor"}
+ *     {"system"="SystemUser", "realtor"="\CoreBundle\Entity\Realtor", "agency"="\CoreBundle\Entity\Agency"}
  * )
  */
 class SystemUser implements AdvancedUserInterface, \Serializable {
@@ -467,31 +467,6 @@ class SystemUser implements AdvancedUserInterface, \Serializable {
                 $this->email,
                 $this->enabled
                 ) = unserialize($serialized);
-    }
-    
-    public function getUserType() {
-        $response = array();
-        $roles = $this->getRoles();
-        foreach ($roles as $role) {
-            switch ($role) {
-                case 'ROLE_WORK':
-                    $response[] = 'Asesor';
-                    break;
-                case 'ROLE_AUDITORY':
-                    $response[] = 'Auditor';
-                    break;
-                case 'ROLE_MANAGEMENT':
-                    $response[] = 'Coordinador';
-                    break;
-                case 'ROLE_ADMINISTRATION':
-                    $response[] = 'Administrador';
-                    break;                
-            }
-        }
-        if (count($response) == 0) {
-            $response[] = 'Cliente';
-        }
-        return implode(',', $response);
     }
     
     public function getGroup() {

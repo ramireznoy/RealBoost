@@ -4,8 +4,8 @@ namespace AdminBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AdminBundle\Entity\SystemUser;
-use CoreBundle\Entity\Advisor;
-use CoreBundle\Entity\Client;
+use CoreBundle\Entity\Agency;
+use CoreBundle\Entity\Realtor;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -158,10 +158,10 @@ class AdminController extends Controller {
                         $user = new SystemUser();
                         break;
                     case CGroups::WORKERS:
-                        $user = new Advisor();
+                        $user = new Agency();
                         break;
                     case CGroups::USERS:
-                        $user = new Client();
+                        $user = new Realtor();
                         break;
                 }
                 $user->addGroup($group);
@@ -207,15 +207,6 @@ class AdminController extends Controller {
                         'cause' => 'El grupo de pago no pudo ser validado o está ausente.',
                     ));
                 }
-                $paymentgroup = $em->getRepository('CoreBundle\Entity\ClientGroup')->find($paymentgroup_id);
-                if ($paymentgroup == null) {
-                    return new JsonResponse(array(
-                        'success' => false,
-                        'message' => 'No se reconoce el grupo de clientes.',
-                        'cause' => 'El grupo de clientes del usuario no pudo encontrarse o el parámetro es incorrecto'
-                    ));
-                }
-                $user->setPaymentgroup($paymentgroup);
 
                 if (intval($position_id) > 0 || intval($position_id) < 5) {
                     if ($position_id != '1') {

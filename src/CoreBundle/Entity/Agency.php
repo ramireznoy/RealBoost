@@ -7,12 +7,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use AdminBundle\Entity\SystemUser;
 
 /**
- * Advisor
+ * Agency
  *
- * @ORM\Table(name="core_advisors")
- * @ORM\Entity(repositoryClass="CoreBundle\Repository\AdvisorRepository")
+ * @ORM\Table(name="core_agencies")
+ * @ORM\Entity(repositoryClass="CoreBundle\Repository\AgencyRepository")
  */
-class Advisor extends SystemUser {
+class Agency extends SystemUser {
 
     /**
      * @var string
@@ -22,24 +22,24 @@ class Advisor extends SystemUser {
     private $coordinator;
     
     /**
-     * @var \Doctrine\Common\Collections\Collection|ClientGroup[]
+     * @var \Doctrine\Common\Collections\Collection|RealtorGroup[]
      * 
-     * One Advisor has Many ClientGroups.
-     * @ORM\OneToMany(targetEntity="ClientGroup", mappedBy="advisor", cascade={"persist", "remove"})
+     * One Agency has Many RealtorGroups.
+     * @ORM\OneToMany(targetEntity="RealtorGroup", mappedBy="agency", cascade={"persist", "remove"})
      */
     private $clientgroups;
     
     /**
      * @var \Doctrine\Common\Collections\Collection|Payment[]
      * 
-     * One Advisor has Many Payments.
-     * @ORM\OneToMany(targetEntity="Payment", mappedBy="advisor", cascade={"persist", "remove"})
+     * One Agency has Many Payments.
+     * @ORM\OneToMany(targetEntity="Payment", mappedBy="agency", cascade={"persist", "remove"})
      */
     private $payments;
 
 
     /**
-     * Constructor for Advisor
+     * Constructor for Agency
      */
     public function __construct() {
         parent::__construct();
@@ -58,7 +58,7 @@ class Advisor extends SystemUser {
     /**
      * Set coordinator
      * 
-     * @return Advisor
+     * @return Agency
      */
     public function setCoordinator($coordinator) {
         $this->coordinator = $coordinator;
@@ -69,17 +69,17 @@ class Advisor extends SystemUser {
     /**
      * Get client groups
      *
-     * @return \Doctrine\Common\Collections\Collection|ClientGroup[]
+     * @return \Doctrine\Common\Collections\Collection|RealtorGroup[]
      */
-    public function getClientGroups()
+    public function getRealtorGroups()
     {
         return $this->clientgroups;
     }
     
     /**
-     * @param ClientGroup $clientgroup
+     * @param RealtorGroup $clientgroup
      */
-    public function addClientGroup(ClientGroup $clientgroup) {
+    public function addRealtorGroup(RealtorGroup $clientgroup) {
         if ($this->clientgroups->contains($clientgroup)) {
             return;
         }
@@ -87,13 +87,13 @@ class Advisor extends SystemUser {
     }
 
     /**
-     * @param ClientGroup $clientgroup
+     * @param RealtorGroup $clientgroup
      */
-    public function removeClientGroup(ClientGroup $clientgroup) {
+    public function removeRealtorGroup(RealtorGroup $clientgroup) {
         if (!$this->clientgroups->contains($clientgroup)) {
             return;
         }
-        $clientgroup->setAdvisor($this);
+        $clientgroup->setAgency($this);
         $this->clientgroups->removeElement($clientgroup);
     }
     
@@ -108,20 +108,20 @@ class Advisor extends SystemUser {
     }
     
     /**
-     * @param ClientGroup $payment
+     * @param RealtorGroup $payment
      */
-    public function addPayment(ClientGroup $payment) {
+    public function addPayment(RealtorGroup $payment) {
         if ($this->payments->contains($payment)) {
             return;
         }
-        $payment->setAdvisor($this);
+        $payment->setAgency($this);
         $this->payments->add($payment);
     }
 
     /**
-     * @param ClientGroup $payment
+     * @param RealtorGroup $payment
      */
-    public function removePayment(ClientGroup $payment) {
+    public function removePayment(RealtorGroup $payment) {
         if (!$this->payments->contains($payment)) {
             return;
         }

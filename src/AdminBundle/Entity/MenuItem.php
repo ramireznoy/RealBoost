@@ -63,6 +63,13 @@ class MenuItem {
      * @ORM\Column(name="ajaxload", type="boolean")
      */
     private $ajaxload;
+    
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="header", type="boolean")
+     */
+    private $header;
 
     /**
      * @var \Doctrine\Common\Collections\Collection|MenuItem[]
@@ -222,6 +229,28 @@ class MenuItem {
         $this->ajaxload = $ajaxload;
 
         return $this;
+    }
+    
+    /**
+     * Set header
+     *
+     * @param boolean $header
+     *
+     * @return MenuItem
+     */
+    public function setHeader($header) {
+        $this->header = $header;
+
+        return $this;
+    }
+
+    /**
+     * Get header
+     *
+     * @return bool
+     */
+    public function isHeader() {
+        return $this->header;
     }
 
     /**

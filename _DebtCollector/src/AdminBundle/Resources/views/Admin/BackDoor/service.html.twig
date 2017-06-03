@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASVCqOtuRON2ebHsvYziyY87veBdJi3ZQ"></script>
+    </head>
+    <body>
+        <form action="{{ path('admin_createservice') }}" method="post">
+            <div><span>Usuario: </span>
+                <select name="user">
+                    {% for user in users %}
+                        <option value="{{ user.id }}">{{ user.fullname }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div><span>Servicio: </span>
+                <select name="service">
+                    {% for service in services %}
+                        <option value="{{ service.id }}">{{ service.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div><span>Adicional: </span><br/>
+                {% for service in extras %}
+                    <input type="checkbox" name="extras[]" value="{{ service.id }}">{{ service.name }}<br/>
+                {% endfor %}
+            </div>
+            <div><span>Tipo de Auto: </span>
+                <select name="cartype">
+                    {% for car in cartypes %}
+                        <option value="{{ car.id }}">{{ car.type }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div><span>Fecha y hora: </span><input id="datetime" type="datetime" name="datetime"></div><br/>
+            <input type="text" id="address" name="address"><br/>
+            <input type="text" id="zip" name="zip"><br/>
+            <input type="text" id="city" name="city"><br/>
+            <input type="text" id="state" name="state"><br/>
+            <input type="text" id="lat" name="latitude"><br/>
+            <input type="text" id="lng" name="longitude"><br/>
+            <div id="map" style="height:300px; width:300px"></div>
+            <div><input type="submit" name="submit" value="Registro"></div>
+        </form>
+    </body>
+    <script>
+        var map = null;
+        var marker = null;
+        var geolocation = {lat: 0, lng: 0};
+        $(document).ready(function () {
+            $('#datetime').val(timeStamp());
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+            });
+            navigator.geolocation.getCurrentPosition(showPosition);
+            marker = new google.maps.Marker({
+                draggable: true,
+                map: map
+            });
+            google.maps.event.addDomListener(window, "resize", function () {
+                google.maps.event.trigger(map, "resize");
+                map.setCenter(geolocation);
+            });
+            google.maps.event.addListenerOnce(map, 'tilesloaded', function () {
+                map.setCenter(geolocation);
+                marker.setPosition(geolocation);
+            });
+            google.maps.event.addListener(map, 'click', function (event) {
+                placeMarker(event.latLng);
+                doReverseGeoLocation(event.latLng.lat(), event.latLng.lng());
+            });
+            google.maps.event.addListener(marker, 'dragend', function (event) {
+                doReverseGeoLocation(event.latLng.lat(), event.latLng.lng());
+            });
+        });
+        function placeMarker(location) {
+            marker.setPosition(location);
+        }
+        function showPosition(position) {
+            geolocation.lat = position.coords.latitude;
+            geolocation.lng = position.coords.longitude;
+            map.setCenter(geolocation);
+            marker.setPosition(geolocation);
+            $('#map').unblock();
+            doReverseGeoLocation(geolocation.lat, geolocation.lng);
+        }
+        function doReverseGeoLocation(lat, lng) {
+            var url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lng + '&key=AIzaSyASVCqOtuRON2ebHsvYziyY87veBdJi3ZQ';
+            $.get(url, function (resp) {
+                if (resp.status === 'OK') {
+                    var components = resp.results[0].address_components;
+                    var address = resp.results[0].formatted_address;
+                    for (var i = 0; i < components.length; i++) {
+                        if (components[i].types[0] === 'postal_code') {
+                            var zip = components[i].long_name;
+                        }
+                        if (components[i].types[0] === 'country') {
+                            var country = components[i].long_name;
+                        }
+                        if (components[i].types[0] === 'country') {
+                            var country = components[i].long_name;
+                        }
+                        if (components[i].types[0] === 'administrative_area_level_1') {
+                            var state = components[i].long_name;
+                        }
+                        if (components[i].types[0] === 'administrative_area_level_2') {
+                            var city = components[i].long_name;
+                        }
+                    }
+                    $('#address').val(address);
+                    $('#zip').val(zip);
+                    $('#lat').val(lat);
+                    $('#lng').val(lng);
+                    $('#city').val(city);
+                    $('#state').val(state);
+                    date = new Date();
+                    $('#datetime').val(timeStamp());
+                } else {
+                    $('#address').val('');
+                    alert('Uuups...No hay direcciones registradas en esa ubicación');
+                }
+            });
+        }
+        function timeStamp() {
+            var now = new Date();
+            var date = [now.getFullYear(), now.getMonth() + 1, now.getDate()];
+            var time = [now.getHours(), now.getMinutes(), now.getSeconds()];
+            for (var i = 0; i < 3; i++) {
+                if (date[i] < 10) {
+                    date[i] = "0" + date[i];
+                }
+                if (time[i] < 10) {
+                    time[i] = "0" + time[i];
+                }
+            }
+            return date.join("/") + " " + time.join(":");
+        }
+    </script>
+</html>

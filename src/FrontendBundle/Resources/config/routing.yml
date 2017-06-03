@@ -1,0 +1,4 @@
+public_index:
+    path:     /
+    defaults: { _controller: FrontendBundle:Site:index }
+    

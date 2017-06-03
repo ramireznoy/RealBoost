@@ -1,0 +1,8 @@
+{% extends 'AdminBundle:Admin:content_base.html.twig' %}
+{% block content_title %}Panel{% endblock %}
+{% block content %}
+<p>Autenticado como: {{ user.fullname }} ({{ user.username }})</p>
+<p>Correo: {{ user.email }}</p>
+<p>Teléfono: {{ user.phone }}</p>
+<p>Roles: {% for role in user.roles %}{{ role }}, {% endfor %}</p>
+{% endblock %}

@@ -1,0 +1,52 @@
+admin_home:
+    path:     /
+    defaults: { _controller: AdminBundle:Admin:index }
+admin_login:
+    path:     /login
+    defaults: { _controller: AdminBundle:Admin:login }
+admin_logout:
+    path:     /logout
+
+#
+# Users administration
+#
+admin_manage_users:
+    path:     /manageusers
+    defaults: { _controller: AdminBundle:Views:users }
+admin_createuser_form:
+    path:     /createuser_form
+    defaults: { _controller: AdminBundle:Views:userForm }
+admin_createuser:
+    path:     /createuser
+    defaults: { _controller: AdminBundle:Admin:editUser }
+admin_edituser_form:
+    path:     /edituser_form
+    defaults: { _controller: AdminBundle:Views:userForm }
+admin_edituser:
+    path:     /edituser
+    defaults: { _controller: AdminBundle:Admin:editUser }
+admin_deleteuser:
+    path:     /deleteuser
+    defaults: { _controller: AdminBundle:Admin:deleteUser }
+
+#
+# Groups administration
+#
+admin_manage_clientgroups:
+    path:     /manageclientgroups
+    defaults: { _controller: AdminBundle:Views:clientGroups }
+admin_createclientgroup_form:
+    path:     /createclientgroup_form
+    defaults: { _controller: AdminBundle:Views:clientGroupForm }
+admin_createclientgroup:
+    path:     /createclientgroup
+    defaults: { _controller: AdminBundle:Admin:createService }
+admin_editclientgroup_form:
+    path:     /editeditclientgroup_form
+    defaults: { _controller: AdminBundle:Views:clientGroupForm }
+admin_editclientgroup:
+    path:     /editeditclientgroup
+    defaults: { _controller: AdminBundle:Admin:editService }
+admin_deleteservice:
+    path:     /deleteservice
+    defaults: { _controller: AdminBundle:Admin:deleteService }

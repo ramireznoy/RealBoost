@@ -1,0 +1,18 @@
+<ul class="collapse">
+{% for child in children if child.enabled %}
+{% if is_granted(child.roles) %}
+    <li>
+        <a {% if child.ajaxload and child.pathName is not null %}class="ajaxload"{% endif %} href="{% if child.pathName is not null %}{{ path(child.pathName) }}{% else %}javascript:;{% endif %}">
+            <i class="{{ child.icon }}"></i>
+            {{ child.name }}
+            {% if child.children | length > 0 %}
+            <i class="arrow"></i>
+            {% endif %}
+        </a>
+        {% if child.children | length > 0 %}
+        {% include 'AdminBundle:Admin/Menu:side_submenu.html.twig' with {'children' : child.children} %}
+        {% endif %}
+    </li>
+{% endif %}
+{% endfor %}
+</ul>

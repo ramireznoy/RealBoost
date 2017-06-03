@@ -1,0 +1,6 @@
+rest_login:
+    path:   /login
+    defaults: { _controller: CoreBundle:Rest:login }
+rest_logout:
+    path:   /logout
+    defaults: { _controller: CoreBundle:Rest:logout }    

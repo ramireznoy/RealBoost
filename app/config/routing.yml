@@ -1,0 +1,11 @@
+admin:
+    resource: "@AdminBundle/Resources/config/routing.yml"
+    prefix:   /
+
+core:
+    resource: "@CoreBundle/Resources/config/routing.yml"
+    prefix:   /core
+
+app:
+    resource: "@FrontendBundle/Resources/config/routing.yml"
+    prefix:   /realtors

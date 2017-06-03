@@ -1,0 +1,22 @@
+api_homepage:
+    path:     /
+    defaults: { _controller: CoreBundle:Default:index }
+    
+rest_login:
+    path:   /login
+    defaults: { _controller: CoreBundle:Rest:login }
+rest_logout:
+    path:   /logout
+    defaults: { _controller: CoreBundle:Rest:logout }
+rest_validate_token:
+    path:   /validatetoken
+    defaults: { _controller: CoreBundle:Rest:validateToken }
+rest_get_paymentlist:
+    path:   /getpaymentlist
+    defaults: { _controller: CoreBundle:Rest:getPaymentlist }
+rest_get_clientlist:
+    path:   /getclientlist
+    defaults: { _controller: CoreBundle:Rest:getClientlist }    
+rest_clientcharge:
+    path:   /clientcharge
+    defaults: { _controller: CoreBundle:Rest:clientCharge }    

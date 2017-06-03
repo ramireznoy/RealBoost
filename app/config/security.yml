@@ -1,0 +1,52 @@
+security:
+    role_hierarchy:
+        ROLE_REALTOR:           ROLE_USER
+        ROLE_AGENCY:            ROLE_REALTOR
+        ROLE_ADMINISTRATION:    ROLE_AGENCY
+    
+    encoders:
+        AdminBundle\Entity\SystemUser:
+            algorithm: bcrypt
+
+    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    providers:
+        user_provider:
+            entity:
+                class: AdminBundle:SystemUser
+                property: username
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            anonymous: ~
+            form_login:
+                provider: user_provider
+                login_path:  admin_login
+                check_path:  admin_login
+                csrf_token_generator: security.csrf.token_manager
+                default_target_path: admin_home
+
+            logout:
+                path:   admin_logout
+                target: admin_login
+            # activate different ways to authenticate
+
+            # http_basic: ~
+            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
+
+            # form_login: ~
+            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+    
+    access_control:
+        - { path: ^/realtors, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/core, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/recover, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/registration, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/newsystemuser, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/createsystemuser, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }

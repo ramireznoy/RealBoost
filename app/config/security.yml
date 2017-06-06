@@ -1,3 +1,5 @@
+# To get started with security, check out the documentation:
+# https://symfony.com/doc/current/security.html
 security:
     role_hierarchy:
         ROLE_REALTOR:           ROLE_USER

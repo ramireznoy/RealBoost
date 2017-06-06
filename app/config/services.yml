@@ -1,5 +1,5 @@
 # Learn more about services, parameters and containers at
-# http://symfony.com/doc/current/service_container.html
+# https://symfony.com/doc/current/service_container.html
 parameters:
     #parameter_name: value
 
@@ -16,16 +16,16 @@ services:
 
     # makes classes in src/AppBundle available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
-    CoreBundle\:
-        resource: '../../src/CoreBundle/*'
+    AdminBundle\:
+        resource: '../../src/AdminBundle/*'
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
-        exclude: '../../src/CoreBundle/{Entity,Repository}'
+        exclude: '../../src/AdminBundle/{Entity,Repository,Tests}'
 
     # controllers are imported separately to make sure they're public
     # and have a tag that allows actions to type-hint services
-    CoreBundle\Controller\:
-        resource: '../../src/CoreBundle/Controller'
+    AdminBundle\Controller\:
+        resource: '../../src/AdminBundle/Controller'
         public: true
         tags: ['controller.service_arguments']
 

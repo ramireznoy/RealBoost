@@ -70,3 +70,31 @@ swiftmailer:
     username: '%mailer_user%'
     password: '%mailer_password%'
     spool: { type: memory }
+
+knpu_oauth2_client:
+    clients:
+        # the key "facebook_main" can be anything, it
+        # will create a service: "knpu.oauth2.client.facebook_main"
+        facebook_main:
+            # this will be one of the supported types
+            type: facebook
+            client_id: YOUR_FACEBOOK_APP_ID
+            client_secret: YOUR_FACEBOOK_APP_SECRET
+            # the route that you're redirected to after
+            # see the controller example below
+            redirect_route: connect_facebook_check
+            # route parameters to pass to your route, if needed
+            redirect_params: {}
+            graph_api_version: v2.3
+            
+        linkedin_main:
+            # must be "linkedin" - it activates that type!
+            type: linkedin
+            # add and configure client_id and client_secret in parameters.yml
+            client_id: linkedin_client_id
+            client_secret: linkedin_client_secret
+            # a route name you'll create
+            redirect_route: connect_linkedin_check
+            redirect_params: {}
+            
+        

@@ -10,6 +10,7 @@ security:
 
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
+
         user_provider:
             entity:
                 class: AdminBundle:SystemUser
@@ -47,10 +48,10 @@ security:
         - { path: ^/core, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/recover, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/registration, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/connect, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         # Just for development
         - { path: ^/newsystemuser, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/createsystemuser, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         
-        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: [GET] }
-        - { path: ^/logout, roles: ROLE_USER, methods: [GET] }
-        - { path: ^/, roles: IS_AUTHENTICATED_FULLY, methods: [GET] }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }

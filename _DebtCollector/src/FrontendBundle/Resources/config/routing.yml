@@ -1,8 +1,0 @@
-frontend_home:
-    path:     /
-    defaults: { _controller: FrontendBundle:Site:index }
-
-frontend_get_states:
-    path:     /getstates
-    defaults: { _controller: FrontendBundle:Site:getStates }
-    

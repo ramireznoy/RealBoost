@@ -32,6 +32,16 @@ security:
                 check_path:  admin_login
                 csrf_token_generator: security.csrf.token_manager
                 default_target_path: admin_home
+                
+            remember_me:
+                secret:   '%secret%'
+                # Three days for session storage
+                lifetime: 259200
+                path:     admin_home
+                # by default, the feature is enabled by checking a
+                # checkbox in the login form (see below), uncomment the
+                # following line to always enable it.
+                #always_remember_me: true    
 
             logout:
                 path:   admin_logout
@@ -56,4 +66,4 @@ security:
         - { path: ^/createsystemuser, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/, roles: [IS_AUTHENTICATED_FULLY, IS_AUTHENTICATED_REMEMBERED] }

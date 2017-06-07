@@ -20,8 +20,7 @@ class GoogleController extends Controller {
             /** @var \League\OAuth2\Client\Provider\GoogleUser $user */
             $user = $client->fetchUser();
             // do something with all this new power!
-            $user->getFirstName();
-            // ...
+            return $this->render('AdminBundle:Admin:google-brief.html.twig', array('type' => 'Google', 'user' => $user));
         } catch (IdentityProviderException $e) {
             var_dump($e->getMessage());
             die;

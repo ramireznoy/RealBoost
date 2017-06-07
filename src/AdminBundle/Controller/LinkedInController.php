@@ -20,7 +20,7 @@ class LinkedInController extends Controller {
             /** @var \League\OAuth2\Client\Provider\LinkedInResourceOwner $user */
             $user = $client->fetchUser();
             // do something with all this new power!
-            $user->getEmail();
+            return $this->render('AdminBundle:Admin:linkedin-brief.html.twig', array('type' => 'LinkedIn', 'user' => $user));
             // ...
         } catch (IdentityProviderException $e) {
             var_dump($e->getMessage());

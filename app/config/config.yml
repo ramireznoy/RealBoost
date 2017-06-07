@@ -76,20 +76,20 @@ knpu_oauth2_client:
         facebook_main:
             # this will be one of the supported types
             type: facebook
-            client_id:      YOUR_FACEBOOK_APP_ID
-            client_secret:  YOUR_FACEBOOK_APP_SECRET
+            client_id:      1297636680304654
+            client_secret:  fcbb3505bb769ecc9aa1d89d9023203e
             # the route that you're redirected to after
             # see the controller example below
             redirect_route: connect_facebook_check
             # route parameters to pass to your route, if needed
             redirect_params: {}
             graph_api_version: v2.3
-        
+
         google_main:
             type: google
             # add and configure client_id and client_secret in parameters.yml
-            client_id:      google_client_id
-            client_secret:  google_client_secret
+            client_id:      976700559740-u5jgvrttbl8h4a2k58gmj43dnclp7n35.apps.googleusercontent.com
+            client_secret:  ZcSdBrOjCE8CoeMadIApPsdo
             # a route name you'll create
             redirect_route: connect_google_check
             redirect_params: {}
@@ -100,18 +100,18 @@ knpu_oauth2_client:
             # Optional value for additional fields to be requested from the user profile. If set, these values will be included with the defaults. More details: https://developers.google.com/+/web/api/rest/latest/people
             # user_fields: {}
             # whether to check OAuth2 "state": defaults to true
-            # use_state: true    
-            
+            # use_state: true
+
         linkedin_main:
             # must be "linkedin" - it activates that type!
             type: linkedin
             # add and configure client_id and client_secret in parameters.yml
-            client_id:      linkedin_client_id
-            client_secret:  linkedin_client_secret
+            client_id:      86xwx7thr2gc06
+            client_secret:  u6jOuEXcOKU54Ddv
             # a route name you'll create
             redirect_route: connect_linkedin_check
             redirect_params: {}
-            
+
 #        twitter_main:
 #            # must be "instagram" - it activates that type!
 #            type: twitter
@@ -120,4 +120,4 @@ knpu_oauth2_client:
 #            client_secret:  twitter_client_secret
 #            # a route name you'll create
 #            redirect_route: connect_twitter_check
-#            redirect_params: {}    
+#            redirect_params: {}

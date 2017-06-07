@@ -24,7 +24,7 @@ connect_google:
     path:     /connect/google
     defaults: { _controller: AdminBundle:Google:connect }
 connect_google_check:
-    path:     /connect/linkedin/check
+    path:     /connect/google/check
     defaults: { _controller: AdminBundle:Google:connectCheck }    
     
 connect_linkedin:

@@ -20,8 +20,7 @@ class FacebookController extends Controller {
             /** @var \League\OAuth2\Client\Provider\FacebookUser $user */
             $user = $client->fetchUser();
             // do something with all this new power!
-            $user->getFirstName();
-            // ...
+            return $this->render('AdminBundle:Admin:facebook-brief.html.twig', array('type' => 'Facebook', 'user' => $user));
         } catch (IdentityProviderException $e) {
             var_dump($e->getMessage());
             die;

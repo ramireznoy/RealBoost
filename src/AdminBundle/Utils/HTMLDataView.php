@@ -32,11 +32,6 @@ class HTMLDataView {
         }
     }
     
-    public static function dateType($value) {
-        setlocale(LC_TIME, 'es_ES');
-        return '<div class="text-center">'.strftime('%A %H:%M', $value->getTimestamp()).'</span></div>';
-    }
-    
     public static function percentType($value) {
         if($value != 0) {
             $p = number_format($value*100,2);
@@ -48,14 +43,6 @@ class HTMLDataView {
     
     public static function moneyType($value, $currency) {
         return '<div class="text-center">'.$value.' '.$currency.'</span></div>';
-    }
-    
-    public static function meetingType($date, $time) {
-        return '<div class="text-center">'.$date.' <span class="label label-info">'.$time.'</span></span></div>';
-    }
-    
-    public static function centeredType($value) {
-        return '<div class="text-center">'.$value.'</span></div>';
     }
     
     public static function transactionResultType($result) {

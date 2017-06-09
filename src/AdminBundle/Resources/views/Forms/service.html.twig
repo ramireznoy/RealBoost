@@ -1,0 +1,50 @@
+<form class="form-horizontal" method="post">
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="name">Nombre</label>
+        <div class="col-md-6">
+            <input value="{% if service is defined %}{{ service.name }}{% endif %}" name="name" placeholder="Nombre del servicio" class="form-control input-md" type="text">
+            <span class="help-block"><small>Nombre del servicio</small></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="description">Descripción</label>
+        <div class="col-md-6">
+            <textarea name="description" placeholder="Descripción del servicio" rows="5" class="form-control input-md">{% if service is defined %}{{ service.description }}{% endif %}</textarea>
+            <span class="help-block"><small>Descripción del servicio para el cliente</small></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="extra">Tipo</label>
+        <div class="col-md-6">
+            <div class="checkbox">
+                <input value="{% if service is defined %}{% if service.extra %}true{% else %}false{% endif %}{% endif %}" id="extra" name="extra" class="magic-checkbox" type="checkbox" {% if service is defined %}{% if service.extra %}checked{% endif %}{% endif %}>
+                <label for="extra">Servicio extra</label>
+            </div>
+            <span class="help-block"><small>El servicio puede utilizarse en combo</small></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="enabled">Disponible</label>
+        <div class="col-md-6">
+            <div class="checkbox">
+                <input value="{% if service is defined %}{% if service.enabled %}true{% else %}false{% endif %}{% endif %}" id="enabled" name="enabled" class="magic-checkbox" type="checkbox" {% if service is defined %}{% if service.enabled %}checked{% endif %}{% endif %}>
+                <label for="enabled">Disponibilidad</label>
+            </div>
+            <span class="help-block"><small>El servicio ya está disponible</small></span>
+        </div>
+    </div>
+    {% if service is defined %}
+        <input value="{{ service.id }}" name="id" type="hidden">
+    {% endif %}
+</form>
+<script>
+    $(document).ready(function () {
+        $('.magic-checkbox').click(function () {
+            if ($(this).val() === 'true') {
+                $(this).val('false');
+            } else {
+                $(this).val('true');
+            }
+        });
+    });
+</script>

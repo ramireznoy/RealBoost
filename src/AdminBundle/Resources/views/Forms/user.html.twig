@@ -1,16 +1,5 @@
 <form class="form-horizontal" method="post">
     <div class="form-group">
-        <label class="col-md-4 control-label" for="group">Grupo de usuarios</label>
-        <div class="col-md-6">
-            <select id="group-selector" name="group" class="selectpicker">
-                {% for group in groups %}
-                    <option value="{{ group.id }}" {% if user is defined %}{% if user.group.id == group.id %}selected{% endif %}{% endif %}>{{ group.name }}</option>
-                {% endfor %}
-            </select>
-            <span class="help-block"><small>El grupo al que será asociado el usuario</small></span>
-        </div>
-    </div>
-    <div class="form-group">
         <label class="col-md-4 control-label" for="username">Nombre de usuario</label>
         <div class="col-md-6">
             <input value="{% if user is defined %}{{ user.username }}{% endif %}" name="username" placeholder="Nombre de usuario" class="form-control input-md" type="text">
@@ -18,19 +7,19 @@
         </div>
     </div>
     {% if user is not defined %}
-        <div class="form-group">
-            <label class="col-md-4 control-label" for="password1">Contraseña</label>
-            <div class="col-md-6">
-                <input name="password1" placeholder="Contraseña de acceso" class="form-control input-md" type="password">
-            </div>
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="password1">Contraseña</label>
+        <div class="col-md-6">
+            <input name="password1" placeholder="Contraseña de acceso" class="form-control input-md" type="password">
         </div>
-        <div class="form-group">
-            <label class="col-md-4 control-label" for="password2"></label>
-            <div class="col-md-6">
-                <input name="password2" placeholder="Repetir la Contraseña de acceso" class="form-control input-md" type="password">
-                <span class="help-block"><small>Escribir dos veces la contraseña de acceso</small></span>
-            </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="password2"></label>
+        <div class="col-md-6">
+            <input name="password2" placeholder="Repetir la Contraseña de acceso" class="form-control input-md" type="password">
+            <span class="help-block"><small>Escribir dos veces la contraseña de acceso</small></span>
         </div>
+    </div>
     {% endif %}
     <div class="form-group">
         <label class="col-md-4 control-label" for="email">Correo electrónico</label>
@@ -60,35 +49,34 @@
             <span class="help-block"><small>Apellidos reales de la persona</small></span>
         </div>
     </div>
-    <div id="client" {% if user is defined %}{% if user.group.id != 3 %}class="hidden"{% endif %}{% else %}class="hidden"{% endif %}>
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="group">Grupo</label>
+        <div class="col-md-6">
+            <select id="group-selector" name="group" class="selectpicker">
+                {% for group in groups %}
+                    <option value="{{ group.id }}" {% if user is defined %}{% if user.group.id == group.id %}selected{% endif %}{% endif %}>{{ group.name }}</option>
+                {% endfor %}
+            </select>
+            <span class="help-block"><small>El grupo al que será asociado el usuario</small></span>
+        </div>
+    </div>
+    <div id="business" {% if user is defined %}{% if user.group.id == 1 %}class="hidden"{% endif %}{% else %}class="hidden"{% endif %}>
         <div class="form-group">
-            <label class="col-md-4 control-label" for="paymentgroup">Grupo de Clientes</label>
+            <label class="col-md-4 control-label" for="state">Estado</label>
             <div class="col-md-6">
-                <select id="group-selector" name="paymentgroup" class="selectpicker">
-                    {% if user is defined %}{% if user.group.id == 3 %}
-                    {% for group in paymentgroups %}
-                        <option value="{{ group.id }}" {% if user is defined %}{% if user.paymentgroup.id == group.id %}selected{% endif %}{% endif %}>{{ group.name }}</option>
+                <select name="state" class="selectpicker">
+                    {% for state in states %}
+                        <option value="{{ state.id }}" {% if user.state is defined %}{% if user.state.id == state.id %}selected{% endif %}{% endif %}>{{ state.name }}</option>
                     {% endfor %}
-                    {% endif %}
-                    {% else %}
-                    {% for group in paymentgroups %}    
-                        <option value="{{ group.id }}">{{ group.name }}</option>
-                    {% endfor %}
-                    {% endif %}
                 </select>
-                <span class="help-block"><small>El grupo de clientes al que será asociado el usuario para pagos</small></span>
+                <span class="help-block"><small>El Estado del usuario</small></span>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-md-4 control-label" for="groupposition">Cargo dentro del grupo</label>
+            <label class="col-md-4 control-label" for="city">Ciudad</label>
             <div class="col-md-6">
-                <select id="group-selector" name="groupposition" class="selectpicker">
-                    <option value="1" {% if user is defined and user.group.id == 3 %}{% if user.groupposition == 1 %}selected{% endif %}{% endif %}>Miembro</option>
-                    <option value="2" {% if user is defined and user.group.id == 3 %}{% if user.groupposition == 2 %}selected{% endif %}{% endif %}>Tesorero</option>
-                    <option value="3" {% if user is defined and user.group.id == 3 %}{% if user.groupposition == 3 %}selected{% endif %}{% endif %}>Secretario</option>
-                    <option value="4" {% if user is defined and user.group.id == 3 %}{% if user.groupposition == 4 %}selected{% endif %}{% endif %}>Presidente</option>
-                </select>
-                <span class="help-block"><small>Cargo del cliente dentro de su grupo</small></span>
+                <input value="{% if user.city is defined %}{{ user.city }}{% endif %}"  name="city" placeholder="Ciudad del usuario" class="form-control input-md" type="text">
+                <span class="help-block"><small>La Ciudad dónde reside el usuario</small></span>
             </div>
         </div>
         <div class="form-group">
@@ -99,31 +87,15 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-md-4 control-label" for="amount">Préstamo</label>
+            <label class="col-md-4 control-label" for="zip">Código postal</label>
             <div class="col-md-6">
-                <input value="{% if user.amount is defined %}{{ user.amount }}{% endif %}" name="amount" placeholder="Pago semanal" class="form-control input-md" type="text">
-                <span class="help-block"><small>Préstamo asignado al cliente</small></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-md-4 control-label" for="payment">Pago semanal</label>
-            <div class="col-md-6">
-                <input value="{% if user.payment is defined %}{{ user.payment }}{% endif %}" name="payment" placeholder="Pago semanal" class="form-control input-md" type="text">
-                <span class="help-block"><small>Pago semanal que debe cubrir el cliente</small></span>
-            </div>
-        </div>
-    </div>
-    <div id="advisor" {% if user is defined %}{% if user.group.id != 2 %}class="hidden"{% endif %}{% else %}class="hidden"{% endif %}>
-        <div class="form-group">
-            <label class="col-md-4 control-label" for="coordinator">Coordinador</label>
-            <div class="col-md-6">
-                <input value="{% if user.coordinator is defined %}{{ user.coordinator }}{% endif %}" name="coordinator" placeholder="Nombre del coordinador" class="form-control input-md" type="text">
-                <span class="help-block"><small>Coordinador para el asesor</small></span>
+                <input value="{% if user.zip is defined %}{{ user.zip }}{% endif %}" name="zip" placeholder="Código postal" class="form-control input-md" type="text">
+                <span class="help-block"><small>El código postal de la dirección</small></span>
             </div>
         </div>
     </div>
     {% if user is defined %}
-        <input value="{{ user.id }}" name="id" type="hidden">
+    <input value="{{ user.id }}" name="id" type="hidden">
     {% endif %}
 </form>
 <script>
@@ -131,18 +103,10 @@
         $('.selectpicker').selectpicker();
         $('#group-selector').change(function () {
             var group = $('#group-selector').val();
-            switch (group) {
-                case '3':
-                    $('#client').removeClass('hidden');
-                    $('#advisor').addClass('hidden');
-                    break;
-                case '2':
-                    $('#client').addClass('hidden');
-                    $('#advisor').removeClass('hidden');
-                    break;
-                default:
-                    $('#client').addClass('hidden');
-                    $('#advisor').addClass('hidden');
+            if (group === '1') {
+                $('#business').addClass('hidden');
+            } else {
+                $('#business').removeClass('hidden');
             }
         });
     });

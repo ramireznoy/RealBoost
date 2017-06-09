@@ -1,0 +1,39 @@
+<form class="form-horizontal" method="post">
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="brand">Marca</label>
+        <div class="col-md-6">
+            <select id="group-selector" name="brand" class="selectpicker" data-live-search="true" data-width="100%">
+                {% for brand in brands %}
+                    <option value="{{ brand.id }}" {% if model is defined %}{% if model.brand.id == brand.id %}selected{% endif %}{% endif %}>{{ brand.name }}</option>
+                {% endfor %}
+            </select>
+            <span class="help-block"><small>La marca del auto</small></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="name">Modelo</label>
+        <div class="col-md-6">
+            <input value="{% if model is defined %}{{ model.name }}{% endif %}"  name="name" placeholder="Modelo del auto" class="form-control input-md" type="text">
+            <span class="help-block"><small>El nombre familiar del modelo de auto</small></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="category">Categoría</label>
+        <div class="col-md-6">
+            <select id="group-selector" name="category" class="selectpicker" data-live-search="true" data-width="100%">
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if model is defined %}{% if model.type.id == category.id %}selected{% endif %}{% endif %}>{{ category.name }}</option>
+                {% endfor %}
+            </select>
+            <span class="help-block"><small>La categoría del auto para el negocio</small></span>
+        </div>
+    </div>
+    {% if model is defined %}
+        <input value="{{ model.id }}" name="id" type="hidden">
+    {% endif %}
+</form>
+<script>
+    $(document).ready(function () {
+        $('.selectpicker').selectpicker();        
+    });
+</script>

@@ -5,6 +5,7 @@ namespace AdminBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use AdminBundle\Constants\CRoles;
 
 /**
  * SystemUser
@@ -14,7 +15,7 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="user_type", type="string")
  * @ORM\DiscriminatorMap(
- *     {"system"="SystemUser", "realtor"="\CoreBundle\Entity\Realtor", "agency"="\CoreBundle\Entity\Agency"}
+ *     {"system"="SystemUser", "client"="\CoreBundle\Entity\Client", "worker"="\CoreBundle\Entity\BusinessWorker"}
  * )
  */
 class SystemUser implements AdvancedUserInterface, \Serializable {
@@ -104,13 +105,6 @@ class SystemUser implements AdvancedUserInterface, \Serializable {
      * @ORM\Column(name="lastlogin", type="datetime", nullable=true)
      */
     private $lastlogin;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="facebookId", type="string", length=50, unique=true)
-     */
-    private $facebookId;
 
     /**
      * @var \Doctrine\Common\Collections\Collection|UserGroup[]
@@ -417,26 +411,6 @@ class SystemUser implements AdvancedUserInterface, \Serializable {
         $this->groups->removeElement($group);
     }
 
-    /**
-     * Get Facebook Id
-     * 
-     * @return string
-     */
-    public function getFacebookId() {
-        return $this->facebookId;
-    }
-
-    /**
-     * Set Facebook Id
-     * 
-     * @param string $facebookId
-     * @return SystemUser
-     */
-    public function setFacebookId($facebookId) {
-        $this->facebookId = $facebookId;
-        return $this;
-    }
-
     public function eraseCredentials() {
         $this->plainPassword = null;
     }
@@ -494,6 +468,31 @@ class SystemUser implements AdvancedUserInterface, \Serializable {
                 $this->email,
                 $this->enabled
                 ) = unserialize($serialized);
+    }
+    
+    public function getUserType() {
+        $response = array();
+        $roles = $this->getRoles();
+        foreach ($roles as $role) {
+            switch ($role) {
+                case 'ROLE_WORK':
+                    $response[] = 'Trabajador';
+                    break;
+                case 'ROLE_AUDITORY':
+                    $response[] = 'Auditor';
+                    break;
+                case 'ROLE_MANAGEMENT':
+                    $response[] = 'Directivo';
+                    break;
+                case 'ROLE_ADMINISTRATION':
+                    $response[] = 'Administrador';
+                    break;                
+            }
+        }
+        if (count($response) == 0) {
+            $response[] = 'Cliente';
+        }
+        return implode(',', $response);
     }
     
     public function getGroup() {

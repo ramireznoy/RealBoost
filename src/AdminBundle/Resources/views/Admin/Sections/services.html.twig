@@ -1,0 +1,4 @@
+{% extends 'AdminBundle:Admin:content_base.html.twig' %}
+{% block content %}
+{% include 'AdminBundle:Utils:table.html.twig' with {'model' : model, 'table_id' : 'services-table'} %}
+{% endblock %}

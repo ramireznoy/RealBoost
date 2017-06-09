@@ -1,22 +1,16 @@
 {% for parent in menuitems if parent.enabled %}
-    {% if is_granted(parent.roles) %}
-        {% if parent.header %}
-            <li class="navigation-header">
-                <span>{{ parent.name }}</span>
-            </li>
-        {% else %}
-            <li>
-                <a {% if parent.ajaxload and parent.pathName is not null %}class="ajaxload"{% endif %} href="{% if parent.pathName is not null %}{{ path(parent.pathName) }}{% else %}javascript:;{% endif %}">
-                    <i class="{{ parent.icon }}"></i>
-                    <span>{{ parent.name }}</span>
-                    {#{% if parent.children | length > 0 %}
-                    <i class="arrow"></i>
-                    {% endif %}#}
-                </a>
-                {% if parent.children | length > 0 %}
-                    {% include 'AdminBundle:Admin/Menu:side_submenu.html.twig' with {'children' : parent.children} %}
-                {% endif %}
-            </li>
+{% if is_granted(parent.roles) %}
+<li>
+    <a {% if parent.ajaxload and parent.pathName is not null %}class="ajaxload"{% endif %} href="{% if parent.pathName is not null %}{{ path(parent.pathName) }}{% else %}javascript:;{% endif %}">
+        <i class="{{ parent.icon }}"></i>
+        <span class="menu-title">{{ parent.name }}</span>
+        {% if parent.children | length > 0 %}
+        <i class="arrow"></i>
         {% endif %}
+    </a>
+    {% if parent.children | length > 0 %}
+    {% include 'AdminBundle:Admin/Menu:side_submenu.html.twig' with {'children' : parent.children} %}
     {% endif %}
+</li>
+{% endif %}
 {% endfor %}

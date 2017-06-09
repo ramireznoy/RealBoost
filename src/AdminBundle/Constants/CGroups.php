@@ -11,6 +11,5 @@ class CGroups {
     const ADMINISTRATORS = 1;
     const WORKERS = 2;
     const USERS = 3;
-    const MANAGERS = 4;
-    const AUDITORS = 5;
+    const AUDITORS = 4;
 }

@@ -51,6 +51,13 @@ class RegisterRequest
      * @ORM\Column(name="mobile", type="string", length=20, unique=true)
      */
     private $mobile;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="business", type="string", length=100)
+     */
+    private $business;
 
     /**
      * @var string
@@ -193,6 +200,15 @@ class RegisterRequest
     }
 
     /**
+     * Get Business name
+     * 
+     * @return string
+     */
+    public function getBusiness() {
+        return $this->business;
+    }
+
+    /**
      * Set Mobile number
      * 
      * @param string $mobile
@@ -202,6 +218,18 @@ class RegisterRequest
         $this->mobile = $mobile;
         return $this;
     }
-    
+
+    /**
+     * Set Business name
+     * @param string $business
+     * @return RegisterRequest
+     */
+    public function setBusiness($business) {
+        $this->business = $business;
+        return $this;
+    }
+
+
+
 }
 

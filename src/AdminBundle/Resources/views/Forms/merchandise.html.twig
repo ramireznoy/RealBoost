@@ -1,0 +1,56 @@
+<form class="form-horizontal" method="post">
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="service">Servicio</label>
+        <div class="col-md-6">
+            <select id="group-selector" name="service" class="selectpicker" data-live-search="true" data-width="100%">
+                {% for service in services %}
+                    <option value="{{ service.id }}" {% if merchandise is defined %}{% if merchandise.service.id == service.id %}selected{% endif %}{% endif %}>{{ service.name }}</option>
+                {% endfor %}
+            </select>
+            <span class="help-block"><small>El servicio que será ofrecido</small></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="category">Categoría</label>
+        <div class="col-md-6">
+            <select id="group-selector" name="category" class="selectpicker" data-live-search="true" data-width="100%">
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if merchandise is defined %}{% if merchandise.cartype.id == category.id %}selected{% endif %}{% endif %}>{{ category.name }}</option>
+                {% endfor %}
+            </select>
+            <span class="help-block"><small>La categoría del auto que aplica al servicio</small></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="price">Precio</label>
+        <div class="col-md-6">
+            <input value="{% if merchandise is defined %}{{ merchandise.price }}{% endif %}"  name="price" placeholder="Precio de la oferta" class="form-control input-md" type="text">
+            <span class="help-block"><small>El precio de la oferta, por defecto en MXN</small></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="enabled">Disponible</label>
+        <div class="col-md-6">
+            <div class="checkbox">
+                <input value="{% if merchandise is defined %}{% if merchandise.enabled %}true{% else %}false{% endif %}{% endif %}" id="enabled" name="enabled" class="magic-checkbox" type="checkbox" {% if merchandise is defined %}{% if merchandise.enabled %}checked{% endif %}{% endif %}>
+                <label for="enabled">Disponibilidad</label>
+            </div>
+            <span class="help-block"><small>La oferta ya está disponible</small></span>
+        </div>
+    </div>
+    {% if merchandise is defined %}
+        <input value="{{ merchandise.id }}" name="id" type="hidden">
+    {% endif %}
+</form>
+<script>
+    $(document).ready(function () {
+        $('.selectpicker').selectpicker();
+        $('.magic-checkbox').click(function () {
+            if ($(this).val() === 'true') {
+                $(this).val('false');
+            } else {
+                $(this).val('true');
+            }
+        });
+    });
+</script>

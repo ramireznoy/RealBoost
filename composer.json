@@ -5,29 +5,24 @@
     "description": "The \"Symfony Standard Edition\" distribution",
     "autoload": {
         "psr-4": { "": "src/" },
-        "classmap": ["app/AppKernel.php", "app/AppCache.php"]
+        "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
     },
     "autoload-dev": {
-        "psr-4": { "Tests\\": "tests/" },
-        "files": ["vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php"]
+        "psr-4": { "Tests\\": "tests/" }
     },
     "require": {
         "php": ">=5.5.9",
-        "doctrine/doctrine-bundle": "^1.6",
+        "symfony/symfony": "3.1.*",
         "doctrine/orm": "^2.5",
-        "incenteev/composer-parameter-handler": "^2.0",
-        "sensio/distribution-bundle": "^5.0.19",
-        "sensio/framework-extra-bundle": "^3.0.2",
-        "symfony/monolog-bundle": "^3.1.0",
+        "doctrine/doctrine-bundle": "^1.6",
+        "doctrine/doctrine-cache-bundle": "^1.2",
+        "symfony/swiftmailer-bundle": "^2.3",
+        "symfony/monolog-bundle": "^2.8",
         "symfony/polyfill-apcu": "^1.0",
-        "symfony/swiftmailer-bundle": "^2.3.10",
-        "symfony/symfony": "3.3.*",
-        "twig/twig": "^1.0||^2.0",
-        "knpuniversity/oauth2-client-bundle": "^1.9",
-        "league/oauth2-linkedin": "^2.0",
-        "league/oauth2-facebook": "^2.0",
-        "g105b/oauth2-twitter": "^1.0",
-        "league/oauth2-google": "^2.0"
+        "sensio/distribution-bundle": "^5.0",
+        "sensio/framework-extra-bundle": "^3.0.2",
+        "incenteev/composer-parameter-handler": "^2.0",
+        "conekta/conekta-php": "dev-master"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
@@ -49,6 +44,11 @@
             "@symfony-scripts"
         ]
     },
+    "config": {
+        "platform": {
+            "php": "5.5.9"
+        }
+    },
     "extra": {
         "symfony-app-dir": "app",
         "symfony-bin-dir": "bin",
@@ -60,7 +60,7 @@
             "file": "app/config/parameters.yml"
         },
         "branch-alias": {
-            "dev-master": "3.3-dev"
+            "dev-master": "3.1-dev"
         }
     }
 }

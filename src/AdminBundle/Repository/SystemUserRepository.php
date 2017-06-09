@@ -31,11 +31,4 @@ class SystemUserRepository extends \Doctrine\ORM\EntityRepository
                 ->setParameter('list', $array);
         return $qb->getQuery()->getSingleScalarResult();
     }
-
-    public function findFacebookId($facebookId) {
-        $qb = $this->createQueryBuilder('u')
-                ->where('u.facebookId = :facebookId')
-                ->setParameter('facebookId', $facebookId);
-        return $qb->getQuery()->getResult();
-    }
 }

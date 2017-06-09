@@ -106,6 +106,13 @@ class SystemUser implements AdvancedUserInterface, \Serializable {
     private $lastlogin;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="facebookId", type="string", length=50, unique=true)
+     */
+    private $facebookId;
+
+    /**
      * @var \Doctrine\Common\Collections\Collection|UserGroup[]
      *
      * @ORM\ManyToMany(targetEntity="UserGroup", mappedBy="users")
@@ -408,6 +415,26 @@ class SystemUser implements AdvancedUserInterface, \Serializable {
             return;
         }
         $this->groups->removeElement($group);
+    }
+
+    /**
+     * Get Facebook Id
+     * 
+     * @return string
+     */
+    public function getFacebookId() {
+        return $this->facebookId;
+    }
+
+    /**
+     * Set Facebook Id
+     * 
+     * @param string $facebookId
+     * @return SystemUser
+     */
+    public function setFacebookId($facebookId) {
+        $this->facebookId = $facebookId;
+        return $this;
     }
 
     public function eraseCredentials() {

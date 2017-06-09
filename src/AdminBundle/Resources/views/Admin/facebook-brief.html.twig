@@ -34,7 +34,7 @@
 
                         <h6 class="content-group text-semibold">
                             Response from {{ type }}
-                            <small class="display-block">Basic card using <code>thumbnail</code> component</small>
+                            <small class="display-block">The Facebook Id <code>{{ user.id }}</code></small>
                         </h6>
 
                         <div class="row">
@@ -50,6 +50,7 @@
                                         <div class="media-body">
                                             <h6 class="media-heading">{{ user.name }}</h6>
                                             <p class="text-muted">{{ user.email }}</p>
+                                            <p>The user was {% if not found %}NOT{% endif %} found in local database</p>
 
                                             {#<ul class="icons-list">
                                                 <li><a href="#" data-popup="tooltip" title="Google Drive" data-container="body"><i class="icon-google-drive"></i></a></li>

@@ -21,7 +21,7 @@ class ViewsController extends Controller {
         }
     }
     
-    public function loginAction() {
+    public function loginFormAction() {
         if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             $authenticationUtils = $this->get('security.authentication_utils');
             $error = $authenticationUtils->getLastAuthenticationError();
@@ -31,7 +31,7 @@ class ViewsController extends Controller {
         }
     }
     
-    public function registerAction() {
+    public function registerFormAction() {
         if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             $authenticationUtils = $this->get('security.authentication_utils');
             $error = $authenticationUtils->getLastAuthenticationError();
@@ -41,7 +41,7 @@ class ViewsController extends Controller {
         }
     }
     
-    public function recoverAction() {
+    public function recoverFormAction() {
         if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             $authenticationUtils = $this->get('security.authentication_utils');
             $error = $authenticationUtils->getLastAuthenticationError();

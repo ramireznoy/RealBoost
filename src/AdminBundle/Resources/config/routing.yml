@@ -1,11 +1,17 @@
 admin_home:
     path:     /
-    defaults: { _controller: AdminBundle:Admin:index }
+    defaults: { _controller: AdminBundle:Views:index }
 admin_login:
     path:     /login
-    defaults: { _controller: AdminBundle:Admin:login }
+    defaults: { _controller: AdminBundle:Views:login }
 admin_logout:
     path:     /logout
+admin_register:
+    path:     /register
+    defaults: { _controller: AdminBundle:Views:register }    
+admin_recover:
+    path:     /recover
+    defaults: { _controller: AdminBundle:Views:recover } 
 
 admin_createuser_view_test:
     path:     /bd/user

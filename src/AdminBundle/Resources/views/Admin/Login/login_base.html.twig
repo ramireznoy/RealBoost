@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>RealBoost | {% block subtitle %}Login{% endblock %}</title>
+
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+        <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/nifty.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/plugins/ionicons/css/ionicons.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/plugins/magic-check/css/magic-check.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/plugins/pace/pace.min.css') }}" rel="stylesheet">
+        {% block styles %}{% endblock %}
+
+    </head>
+
+    <body>
+        <div id="container" class="cls-container">
+
+            <div id="bg-overlay" class="bg-img"></div>
+
+            <div class="cls-content">
+                {% block main_content %}{% endblock %}
+            </div>
+        </div>
+
+    </body>
+
+    <script src="{{ asset('assets/plugins/pace/pace.min.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery-2.2.4.min.js') }}"></script>
+    <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/noback.js') }}"></script>
+    {% block scripts %}{% endblock %}
+
+</html>
+

@@ -19,27 +19,6 @@ use Conekta\Charge;
 
 class AdminController extends Controller {
 
-    public function indexAction() {
-        try {
-            $em = $this->getDoctrine()->getManager();
-            $items = $em->getRepository('AdminBundle\Entity\MenuItem')->findBy(array('parent' => null));
-            $user = $this->getUser();
-            return $this->render('AdminBundle:Admin:index.html.twig', array('menuitems' => $items, 'user' => $user));
-        } catch (\Exception $ex) {
-            return $this->render('AdminBundle:Admin:index.html.twig', array('resp' => '>>>> fallo <<<< ' . $ex->getMessage()));
-        }
-    }
-
-    public function loginAction() {
-        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
-            $authenticationUtils = $this->get('security.authentication_utils');
-            $error = $authenticationUtils->getLastAuthenticationError();
-            return $this->render('AdminBundle:Admin:login.html.twig', array('error' => $error));
-        } else {
-            return $this->redirectToRoute('admin_home');
-        }
-    }
-
     public function createUserAction(Request $request) {
         try {
             $em = $this->getDoctrine()->getManager();

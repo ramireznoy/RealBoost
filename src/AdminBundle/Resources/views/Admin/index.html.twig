@@ -5,7 +5,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Bawii</title>
+        <title>RealBoost</title>
 
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
         <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -32,7 +32,10 @@
 
                     <div class="navbar-header">
                         <a href="{{ path('admin_home') }}" class="navbar-brand">
-                            <img src="{{ asset('assets/img/bawii.png') }}" alt="Bawii logo" class="brand-icon">                            
+                            <img src="{{ asset('assets/img/boost_logo.png') }}" alt="RealBoost" class="brand-icon">
+                            <div class="brand-title">
+                                <span class="brand-text">RealBoost</span>
+                            </div>
                         </a>
                     </div>
 
@@ -50,7 +53,7 @@
                             <li class="dropdown">
                                 <a href="#" data-toggle="dropdown" class="dropdown-toggle">
                                     <i class="demo-pli-bell"></i>
-                                    <span class="badge badge-header badge-danger"></span>
+                                    {#                                    <span class="badge badge-header badge-danger"></span>#}
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-md">
@@ -73,7 +76,7 @@
                                                         </div>
                                                     </a>
                                                 </li>
-                                                
+
                                             </ul>
                                         </div>
                                     </div>
@@ -89,33 +92,30 @@
                             <li id="dropdown-user" class="dropdown">
                                 <a href="#" data-toggle="dropdown" class="dropdown-toggle text-right">
                                     <span class="pull-right">
-                                        <!--<img class="img-circle img-user media-object" src="img/profile-photos/1.png" alt="Profile Picture">-->
                                         <i class="demo-pli-male ic-user"></i>
                                     </span>
                                     <div class="username hidden-xs">{{ user.fullname }}</div>
                                 </a>
 
-
                                 <div class="dropdown-menu dropdown-menu-md dropdown-menu-right panel-default">
 
-                                    <!-- User dropdown menu -->
                                     <ul class="head-list">
                                         <li>
                                             <a href="#">
                                                 <i class="demo-pli-male icon-lg icon-fw"></i> Perfil
                                             </a>
                                         </li>
-                                        <!--<li>
+                                        <li>
                                             <a href="#">
-                                                <span class="badge badge-danger pull-right">9</span>
+                                                <span class="badge badge-danger pull-right"></span>
                                                 <i class="demo-pli-mail icon-lg icon-fw"></i> Mensajes
                                             </a>
-                                        </li>-->
+                                        </li>
                                         <li>
                                             <a href="#">
                                                 <i class="demo-psi-repair icon-lg icon-fw"></i> Configuración
                                             </a>
-                                        </li>                                       
+                                        </li>
                                     </ul>
 
                                     <div class="pad-all text-right">
@@ -135,7 +135,7 @@
             <div class="boxed">
 
                 <div id="content-container">
-                {% include 'AdminBundle:Admin:dashboard.html.twig' with {'user':user} %}
+                    {% include 'AdminBundle:Admin:dashboard.html.twig' with {'user':user} %}
                 </div>
 
                 <nav id="mainnav-container">
@@ -171,7 +171,7 @@
                                     </div>
 
                                     <ul id="mainnav-menu" class="list-group">
-                                    {% include 'AdminBundle:Admin/Menu:side_menu.html.twig' with menuitems %}
+                                        {% include 'AdminBundle:Admin/Menu:side_menu.html.twig' with menuitems %}
                                     </ul>
 
                                 </div>
@@ -193,7 +193,7 @@
         </div>
 
     </body>
-    
+
     <script src="{{ asset('assets/js/jquery-2.2.4.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/nifty.min.js') }}"></script>
@@ -208,124 +208,125 @@
     <script src="{{ asset('assets/plugins/datatables/media/js/jquery.dataTables.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables/media/js/dataTables.bootstrap.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
-    
-    
+    <script type="text/javascript" src="{{ asset('assets/js/noback.js') }}"></script>
+
+
     <script>
-    //# sourceURL=main_base.js
-    var active_view = '';
-    
-    $(document).ready(function () {
-        $('.ajaxload').click(function (ev) {
-            ev.preventDefault();
-            ajaxloader($(this).attr('href'));
+        //# sourceURL=main_base.js
+        var active_view = '';
+
+        $(document).ready(function () {
+            $('.ajaxload').click(function (ev) {
+                ev.preventDefault();
+                ajaxloader($(this).attr('href'));
+            });
+            $('.submit').click(function (ev) {
+                var form = $(ev.target).parents('form:first');
+                ajaxsubmit(form);
+            });
         });
-        $('.submit').click(function (ev) {
-            var form = $(ev.target).parents('form:first');
-            ajaxsubmit(form);
-        });
-    });
-    function ajaxloader(url) {
-        blockUI();
-        $.ajax({
-            url: url,
-            method: 'POST',
-            success: function (resp) {
-                unblockUI();
-                active_view = url;
-                $('#content-container').html(resp);
-                $('#content-container').find('.submit').click(function (ev) {
-                    var form = $(ev.target).parents('form:first');
-                    ajaxsubmit(form);
-                });
-            },
-            error: function () {
-                unblockUI();
-                $.niftyNoty({
-                    type: 'danger',
-                    message : 'No se pudo acceder el recurso solicitado ' + url,
-                    container : 'floating',
-                    timer : 5000
-                });
-            }
-        });
-    }
-    
-    function ajaxsubmit(form, successcb, unsuccesscb, errorcb) {
-        var url = $(form).attr('action');
-        var data = {};
-        $(form).find('input, select, textarea').each(
-            function () {
-                var input = $(this);
-                data[input.attr('name')] = input.val();
-            }
-        );
-        $.ajax({
-            url: url,
-            method: 'POST',
-            data: data,
-            success: function (resp) {
-                if (resp.success) {
-                    $.niftyNoty({
-                        type: 'success',
-                        message : resp.message,
-                        container : 'floating',
-                        timer : 5000
+        function ajaxloader(url) {
+            blockUI();
+            $.ajax({
+                url: url,
+                method: 'POST',
+                success: function (resp) {
+                    unblockUI();
+                    active_view = url;
+                    $('#content-container').html(resp);
+                    $('#content-container').find('.submit').click(function (ev) {
+                        var form = $(ev.target).parents('form:first');
+                        ajaxsubmit(form);
                     });
-                    $(window).scrollTop(0);
-                    $(form).trigger('reset');                    
-                    if (successcb !== null) {
-                        if (resp.newrow !== null) {
-                            successcb(resp.newrow);
-                        } else {
-                            successcb();
-                        }                        
-                    }
-                } else {
-                    /*$.niftyNoty({
+                },
+                error: function () {
+                    unblockUI();
+                    $.niftyNoty({
                         type: 'danger',
-                        message : resp.cause,
-                        container : 'floating',
-                        timer : 5000
-                    });*/
-                    if (unsuccesscb !== null) {
-                        unsuccesscb(resp);
+                        message: 'No se pudo acceder el recurso solicitado ' + url,
+                        container: 'floating',
+                        timer: 5000
+                    });
+                }
+            });
+        }
+
+        function ajaxsubmit(form, successcb, unsuccesscb, errorcb) {
+            var url = $(form).attr('action');
+            var data = {};
+            $(form).find('input, select, textarea').each(
+                    function () {
+                        var input = $(this);
+                        data[input.attr('name')] = input.val();
+                    }
+            );
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: data,
+                success: function (resp) {
+                    if (resp.success) {
+                        $.niftyNoty({
+                            type: 'success',
+                            message: resp.message,
+                            container: 'floating',
+                            timer: 5000
+                        });
+                        $(window).scrollTop(0);
+                        $(form).trigger('reset');
+                        if (successcb !== null) {
+                            if (resp.newrow !== null) {
+                                successcb(resp.newrow);
+                            } else {
+                                successcb();
+                            }
+                        }
+                    } else {
+                        /*$.niftyNoty({
+                         type: 'danger',
+                         message : resp.cause,
+                         container : 'floating',
+                         timer : 5000
+                         });*/
+                        if (unsuccesscb !== null) {
+                            unsuccesscb(resp);
+                        }
+                    }
+                },
+                error: function () {
+                    $.niftyNoty({
+                        type: 'danger',
+                        message: '<strong>No se pudo procesar la solicitud.</strong> Ocurrió un error en el envío.',
+                        container: 'floating',
+                        timer: 5000
+                    });
+                    if (errorcb !== null) {
+                        errorcb();
                     }
                 }
-            },
-            error: function () {
-                $.niftyNoty({
-                    type: 'danger',
-                    message : '<strong>No se pudo procesar la solicitud.</strong> Ocurrió un error en el envío.',
-                    container : 'floating',
-                    timer : 5000
-                });
-                if (errorcb !== null) {
-                    errorcb();
-                }
-            }
-        });
-    }
-    
-    function blockUI() {
-        $('#content-container').block({
-            overlayCSS: {
-                backgroundColor: '#000',
-                opacity: 0.2,
-                cursor: 'wait'
-            },
-            css: {
-                border: 'none',
-                backgroundColor: 'transparent',
-                opacity: 0.8,
-                color: '#000'
-            }, message: '<span class="fa fa-spinner fa-2x fa-spin"></span>'
-        });
-    }
-    
-    function unblockUI() {
-        $('#content-container').unblock();
-    }
-</script>
+            });
+        }
+
+        function blockUI() {
+            $('#content-container').block({
+                overlayCSS: {
+                    backgroundColor: '#000',
+                    opacity: 0.2,
+                    cursor: 'wait'
+                },
+                css: {
+                    border: 'none',
+                    backgroundColor: 'transparent',
+                    opacity: 0.8,
+                    color: '#000'
+                }, message: '<span class="fa fa-spinner fa-2x fa-spin"></span>'
+            });
+        }
+
+        function unblockUI() {
+            $('#content-container').unblock();
+        }
+    </script>
 {% block javascript %}{% endblock %}
-    
+
 </html>

@@ -1,0 +1,46 @@
+{% extends 'AdminBundle:Admin:Login/login_base.html.twig' %}
+{% block main_content %}
+    <div class="cls-content-sm panel login-panel">
+        <div class="panel-body">
+            <div>
+                <img src="{{ asset('assets/img/boost.png') }}" height="100px">
+            </div>
+            <div class="mar-ver pad-btm">
+                <h3 class="h4 mar-no">¡Welcome!</h3>
+                <p class="text-muted">Sign in to your account</p>
+            </div>
+            {% if error %}
+                <div class="alert alert-danger">
+                    <button class="close" data-close="alert"></button>
+                    <span> {{ error.messageKey|trans(error.messageData, 'security') }} </span>
+                </div>
+            {% endif %}
+            <form action="{{ path('admin_login') }}" method="post">
+                <div class="form-group">
+                    <input type="text" name="_username" class="form-control" placeholder="Nickname or e-mail" autofocus>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="_password" class="form-control" placeholder="Password">
+                </div>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+            </form>
+        </div>
+
+        <div class="pad-all">
+            <a href="{{ path('admin_recover') }}" class="btn-link mar-rgt text-primary">Forgot your password?</a>
+            <a href="{{ path('admin_register') }}" class="btn-link mar-lft text-primary">Create an account</a>
+
+            <div class="media pad-top bord-top">
+                <div class="pull-right" style="font-size: 1.2em;">
+                    <a href="#" class="pad-rgt"><i class="ion-social-facebook icon-lg text-primary"></i></a>
+                    <a href="#" class="pad-rgt"><i class="ion-social-google icon-lg text-danger"></i></a>
+                    <a href="#" class="pad-rgt"><i class="ion-social-linkedin large-7 icon-lg text-info"></i></a>
+                </div>
+                <div class="media-body text-left">
+                    Login with social networks
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

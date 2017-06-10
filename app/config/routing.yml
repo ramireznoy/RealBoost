@@ -1,7 +1,7 @@
 app_admin:
     resource: "@AdminBundle/Resources/config/routing.yml"
-    prefix:   /backoffice
+    prefix:   /
 
 app:
     resource: "@FrontendBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /realtors

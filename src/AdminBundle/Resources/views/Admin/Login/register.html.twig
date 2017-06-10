@@ -1,0 +1,57 @@
+{% extends 'AdminBundle:Admin:Login/login_base.html.twig' %}
+{% block subtitle %}Register{% endblock %}
+{% block main_content %}
+    <div class="cls-content-lg panel login-panel">
+        <div class="panel-body">
+            <div class="mar-ver pad-btm">
+                <h3 class="h4 mar-no">Create a New Account</h3>
+                <p class="text-muted">We will send you an e-mail to complete your access</p>
+            </div>
+            <form action="">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Your first name" name="firstname">
+                        </div>
+                    </div>    
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Your last name" name="lastname">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="E-mail" name="email1">
+                        </div>
+                    </div>    
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Repeat e-mail" name="email2">
+                        </div>
+                    </div>
+                </div>
+                <div class="checkbox pad-btm text-left">
+                    <input id="demo-form-checkbox" class="magic-checkbox" type="checkbox">
+                    <label for="demo-form-checkbox">I agree with the <a href="#" class="btn-link text-primary">Terms and Conditions</a></label>
+                </div>
+                <button class="btn btn-primary btn-block" type="submit">Register</button>
+            </form>
+        </div>
+        <div class="pad-all">
+            Already have an account? <a href="{{ path('admin_login') }}" class="btn-link mar-rgt text-primary">Sign In</a>
+
+            <div class="media pad-top bord-top">
+                <div class="pull-right" style="font-size: 1.2em;">
+                    <a href="#" class="pad-rgt"><i class="ion-social-facebook icon-lg text-primary"></i></a>
+                    <a href="#" class="pad-rgt"><i class="ion-social-google icon-lg text-danger"></i></a>
+                    <a href="#" class="pad-rgt"><i class="ion-social-linkedin large-7 icon-lg text-info"></i></a>
+                </div>
+                <div class="media-body text-left">
+                    Register with social networks
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

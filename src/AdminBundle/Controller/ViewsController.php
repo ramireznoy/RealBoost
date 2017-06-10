@@ -10,6 +10,47 @@ use AdminBundle\Utils\HTMLDataView;
 
 class ViewsController extends Controller {
 
+    public function indexAction() {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $items = $em->getRepository('AdminBundle\Entity\MenuItem')->findBy(array('parent' => null));
+            $user = $this->getUser();
+            return $this->render('AdminBundle:Admin:index.html.twig', array('menuitems' => $items, 'user' => $user));
+        } catch (\Exception $ex) {
+            return $this->render('AdminBundle:Admin:index.html.twig', array('resp' => '>>>> fallo <<<< ' . $ex->getMessage()));
+        }
+    }
+    
+    public function loginAction() {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $authenticationUtils = $this->get('security.authentication_utils');
+            $error = $authenticationUtils->getLastAuthenticationError();
+            return $this->render('AdminBundle:Admin:Login/login.html.twig', array('error' => $error));
+        } else {
+            return $this->redirectToRoute('admin_home');
+        }
+    }
+    
+    public function registerAction() {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $authenticationUtils = $this->get('security.authentication_utils');
+            $error = $authenticationUtils->getLastAuthenticationError();
+            return $this->render('AdminBundle:Admin:Login/register.html.twig', array('error' => $error));
+        } else {
+            return $this->redirectToRoute('admin_home');
+        }
+    }
+    
+    public function recoverAction() {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $authenticationUtils = $this->get('security.authentication_utils');
+            $error = $authenticationUtils->getLastAuthenticationError();
+            return $this->render('AdminBundle:Admin:Login/recover.html.twig', array('error' => $error));
+        } else {
+            return $this->redirectToRoute('admin_home');
+        }
+    }
+    
     public function userAction() {
         return $this->render('AdminBundle:Admin/BackDoor:user.html.twig');
     }

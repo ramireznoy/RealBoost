@@ -112,6 +112,12 @@ class SystemUser implements AdvancedUserInterface, \Serializable {
      * @ORM\ManyToMany(targetEntity="UserGroup", mappedBy="users")
      */
     private $groups;
+    
+    /**
+     * One Frequency has Many Schedules.
+     * @ORM\OneToMany(targetEntity="CalendarBundle\Entity\Schedule", mappedBy="user")
+     */
+    private $schedule;
 
     /**
      * Constructor for SystemUser

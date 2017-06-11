@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,6 +13,7 @@
         <link href="{{ asset('assets/css/nifty.min.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/plugins/bootstrap-select/bootstrap-select.min.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/css/demo/nifty-demo-icons.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/demo/nifty-demo.min.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/plugins/ionicons/css/ionicons.min.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/plugins/themify-icons/themify-icons.min.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/plugins/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
@@ -23,7 +25,7 @@
         <script src="{{ asset('assets/plugins/pace/pace.min.js') }}"></script>
         <link href="{{ asset('assets/plugins/fullcalendar/fullcalendar.min.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/plugins/fullcalendar/nifty-skin/fullcalendar-nifty.min.css') }}" rel="stylesheet">
-      
+
 
     </head>
 
@@ -138,7 +140,8 @@
             <div class="boxed">
 
                 <div id="content-container">
-                    {% include 'AdminBundle:Admin:dashboard.html.twig' with {'user':user} %}
+                    {% block content %}
+                    {%endblock%}
                 </div>
 
                 <nav id="mainnav-container">
@@ -200,6 +203,7 @@
     <script src="{{ asset('assets/js/jquery-2.2.4.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/nifty.min.js') }}"></script>
+    <script src="{{ asset('assets/js/demo/nifty-demo.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/bootstrap-select/bootstrap-select.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/morris-js/morris.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/morris-js/raphael-js/raphael.min.js') }}"></script>
@@ -337,3 +341,12 @@
 {% block javascript %}{% endblock %}
 
 </html>
+
+
+
+
+
+
+
+
+

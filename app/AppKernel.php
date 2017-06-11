@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new FrontendBundle\FrontendBundle(),
             new AdminBundle\AdminBundle(),
             new CoreBundle\CoreBundle(),
+            new CalendarBundle\CalendarBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

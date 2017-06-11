@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,7 +25,7 @@
         <script src="{{ asset('assets/plugins/pace/pace.min.js') }}"></script>
         <link href="{{ asset('assets/plugins/fullcalendar/fullcalendar.min.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/plugins/fullcalendar/nifty-skin/fullcalendar-nifty.min.css') }}" rel="stylesheet">
-      
+
 
     </head>
 
@@ -139,7 +140,8 @@
             <div class="boxed">
 
                 <div id="content-container">
-                    {% include 'AdminBundle:Admin:dashboard.html.twig' with {'user':user} %}
+                    {% block content %}
+                    {%endblock%}
                 </div>
 
                 <nav id="mainnav-container">
@@ -339,3 +341,12 @@
 {% block javascript %}{% endblock %}
 
 </html>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,105 @@
+<?php
+
+namespace CalendarBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Frequency
+ *
+ * @ORM\Table(name="schedule")
+ * @ORM\Entity(repositoryClass="AdminBundle\Repository\ScheduleRepository")
+ */
+class Schedule
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    /**
+     * @var Service
+     *
+     * @ORM\ManyToOne(targetEntity="Event", inversedBy="schedule")
+     * @ORM\JoinColumn(name="event", referencedColumnName="id")
+     */
+    private $event;
+    
+     /**
+     *
+     * @ORM\ManyToOne(targetEntity="Frequency", inversedBy="schedule")
+     * @ORM\JoinColumn(name="frequency", referencedColumnName="id")
+     */
+    private $frequency;
+    
+    
+     /**
+     *
+     * @ORM\ManyToOne(targetEntity="AdminBundle\Entity\SystemUser", inversedBy="schedule")
+     * @ORM\JoinColumn(name="user", referencedColumnName="id")
+     */
+    private $user;
+    
+
+    /**
+     * Set event
+     *
+     * @param \CalendarBundle\Entity\Event $event
+     *
+     * @return Schedule
+     */
+    public function setEvent(\CalendarBundle\Entity\Event $event = null)
+    {
+        $this->event = $event;
+
+        return $this;
+    }
+
+    /**
+     * Get event
+     *
+     * @return \CalendarBundle\Entity\Event
+     */
+    public function getEvent()
+    {
+        return $this->event;
+    }
+
+    /**
+     * Set frequency
+     *
+     * @param \CalendarBundle\Entity\Frequency $frequency
+     *
+     * @return Schedule
+     */
+    public function setFrequency(\CalendarBundle\Entity\Frequency $frequency = null)
+    {
+        $this->frequency = $frequency;
+
+        return $this;
+    }
+
+    /**
+     * Get frequency
+     *
+     * @return \CalendarBundle\Entity\Frequency
+     */
+    public function getFrequency()
+    {
+        return $this->frequency;
+    }
+}

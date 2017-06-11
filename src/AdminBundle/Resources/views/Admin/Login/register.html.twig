@@ -1,57 +1,182 @@
 {% extends 'AdminBundle:Admin:Login/login_base.html.twig' %}
 {% block subtitle %}Register{% endblock %}
 {% block main_content %}
-    <div class="cls-content-lg panel login-panel">
+    <div id="register_form" class="cls-content-lg panel login-panel">
         <div class="panel-body">
             <div class="mar-ver pad-btm">
                 <h3 class="h4 mar-no">Create a New Account</h3>
                 <p class="text-muted">We will send you an e-mail to complete your access</p>
             </div>
-            <form action="{{ path('admin_register') }}">
+            <form>
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Your first name" name="firstname">
+                            <input type="text" class="form-control" placeholder="Your first name" id="firstname" name="firstname">
                         </div>
-                    </div>    
+                    </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Your last name" name="lastname">
+                            <input type="text" class="form-control" placeholder="Your last name" id="lastname" name="lastname">
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="E-mail" name="email1">
+                            <input type="text" class="form-control" placeholder="E-mail" id="email1" name="email1">
                         </div>
-                    </div>    
+                    </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Repeat e-mail" name="email2">
+                            <input type="text" class="form-control" placeholder="Repeat e-mail" id="email2" name="email2">
                         </div>
                     </div>
                 </div>
                 <div class="checkbox pad-btm text-left">
-                    <input id="demo-form-checkbox" class="magic-checkbox" type="checkbox">
-                    <label for="demo-form-checkbox">I agree with the <a href="#" class="btn-link text-primary">Terms and Conditions</a></label>
+                    <input id="tandc" class="magic-checkbox" type="checkbox">
+                    <label for="tandc">I agree with the <a href="#" class="btn-link text-primary">Terms and Conditions</a></label>
                 </div>
-                <button class="btn btn-primary btn-block" type="submit">Register</button>
             </form>
+            <button class="btn btn-primary btn-block" id="send">Register</button>
         </div>
         <div class="pad-all">
             Already have an account? <a href="{{ path('admin_login') }}" class="btn-link mar-rgt text-primary">Sign In</a>
-
             <div class="media pad-top bord-top">
+                <div class="media-body text-left">
+                    Register with social networks
+                </div>
                 <div class="pull-right" style="font-size: 1.2em;">
                     <a href="#" class="pad-rgt"><i class="ion-social-facebook icon-lg text-primary"></i></a>
                     <a href="#" class="pad-rgt"><i class="ion-social-google icon-lg text-danger"></i></a>
                     <a href="#" class="pad-rgt"><i class="ion-social-linkedin large-7 icon-lg text-info"></i></a>
                 </div>
-                <div class="media-body text-left">
-                    Register with social networks
-                </div>
             </div>
         </div>
     </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+        var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        var accept = false;
+        $(document).ready(function () {
+            $('#tandc').on('change', function () {
+                accept = !accept;
+            });
+            $('#firstname, #lastname, #email1, #email2').focus(function () {
+                $(this).removeClass('error-marker');
+                $(this).parent('div').removeClass('has-error');
+            });
+            $('#firstname, #lastname').mask('S', {
+                translation: {
+                    'S': {pattern: /[a-zA-Zá-úÁ-Ú ]/, recursive: true}
+                }
+            });
+            $('#email1, #email2').mask('A', {
+                translation: {
+                    'A': {pattern: /[\w@\-.+]/, recursive: true}
+                }
+            });
+            $('#send').on('click', function () {
+                var error = false;
+                if ($('#firstname').val() === '') {
+                    $('#firstname').addClass('error-marker');
+                    $('#firstname').parent('div').addClass('has-error');
+                    error = true;
+                }
+                if ($('#lastname').val() === '') {
+                    $('#lastname').addClass('error-marker');
+                    $('#lastname').parent('div').addClass('has-error');
+                    error = true;
+                }
+                if ($('#email1').val() === '') {
+                    $('#email1').addClass('error-marker');
+                    $('#email1').parent('div').addClass('has-error');
+                    error = true;
+                }
+                if ($('#email2').val() === '') {
+                    $('#email2').addClass('error-marker');
+                    $('#email2').parent('div').addClass('has-error');
+                    error = true;
+                }
+                if (error) {
+                    $.niftyNoty({
+                        type: 'danger',
+                        message: 'Please, complete the marked fields',
+                        container: 'floating',
+                        timer: 5000
+                    });
+                } else if (!accept) {
+                    $.niftyNoty({
+                        type: 'danger',
+                        message: 'Please, you must review and agree our Terms and Conditions',
+                        container: 'floating',
+                        timer: 5000
+                    });
+                } else if (!$('#email1').val().match(mailformat)) {
+                    $('#email1').addClass('error-marker');
+                    $('#email1').parent('div').addClass('has-error');
+                    $.niftyNoty({
+                        type: 'danger',
+                        message: 'Please, be sure to use a valid email address',
+                        container: 'floating',
+                        timer: 5000
+                    });
+                } else if (!$('#email2').val().match(mailformat)) {
+                    $('#email2').addClass('error-marker');
+                    $('#email2').parent('div').addClass('has-error');
+                    $.niftyNoty({
+                        type: 'danger',
+                        message: 'Please, be sure to use a valid email address',
+                        container: 'floating',
+                        timer: 5000
+                    });
+                } else if ($('#email1').val() !== $('#email2').val()) {
+                    $('#email1').addClass('error-marker');
+                    $('#email1').parent('div').addClass('has-error');
+                    $('#email2').addClass('error-marker');
+                    $('#email2').parent('div').addClass('has-error');
+                    $.niftyNoty({
+                        type: 'danger',
+                        message: 'Please, check the mail addresses; there is no match',
+                        container: 'floating',
+                        timer: 5000
+                    });
+                } else {
+                    $('#send').html('<span class="fa fa-spin fa-spinner"></span> Sending...');
+                    $.ajax({
+                        url: '{{ path('admin_register') }}',
+                        method: 'post',
+                        data: {
+                            'firstname': $('#firstname').val(),
+                            'lastname': $('#lastname').val(),
+                            'email1': $('#email1').val(),
+                            'email2': $('#email2').val()
+                        },
+                        success: function (resp) {
+                            if (resp.success) {
+                                $('#register_form').html('<div class="panel-body"><div class="mar-ver pad-btm"><h3 class="h4 mar-no">Success!</h3><p class="text-muted">Your registration has been started</p></div><p>Plase, check your e-mail. We have sent instructions to conclude your registration process</p><a href="{{ path('admin_home') }}"><button class="btn btn-primary btn-block">Go to Login</button></a></div>');
+                            } else {
+                                $('#send').html('Register');
+                                $.niftyNoty({
+                                    type: 'danger',
+                                    message: 'A problem was detected: ' + resp.cause,
+                                    container: 'floating',
+                                    timer: 5000
+                                });
+                            }
+                        },
+                        error: function () {
+                            $('#send').html('Register');
+                            $.niftyNoty({
+                                type: 'danger',
+                                message: 'Something is wrong... :-( Do you have internet access?',
+                                container: 'floating',
+                                timer: 5000
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 {% endblock %}

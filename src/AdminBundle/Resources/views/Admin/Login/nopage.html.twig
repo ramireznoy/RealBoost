@@ -1,26 +1,59 @@
-{% extends 'EPAYFrontendBundle:Base:base_docs.html.twig' %}
-{% block css %}
-    <link rel="stylesheet" href="{{ asset('assets/css/contact.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/error.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/register.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/toastr.min.css') }}">
-{% endblock %}
-{% block main %}
-<article class="nav-animation-element">
-    <div class="content">
-        <div class="number"><span class="fa fa-warning"></span></div>
-        <div class="message">
-            <h2>¡Vaya...! La página solicitada no existe :-/</h2>
-            <p>Estimado usuario, el vínculo utilizado no está disponible. Esto puede ocurrir por dos motivos:</p>
-            <ul>
-                <li><span>La dirección solicitada es incorrecta o está incompleta</span>                    
-                </li>
-                <p class="help">Verfique la dirección URL utilizada, tal vez se haya escrito o copiado incorrectamente.</p>
-                <li><span>El vínculo utilizado caducó</span>                    
-                </li>
-                <p class="help">Los vínculos enviados por correo electrónico son válidos durante las <span class="red">72 horas</span> siguientes. Fuera de ese lapso, los accesos son descartados.</p>
-            </ul>
+<!DOCTYPE html>
+<html lang="en">
+
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sorry, not found...</title>
+
+        <link href="{{ asset('assets/plugins/pace/pace.min.css') }}" rel="stylesheet">
+        <script src="{{ asset('assets/plugins/pace/pace.min.js') }}"></script>
+
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+        <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/nifty.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/demo/nifty-demo-icons.min.css') }}" rel="stylesheet">
+
+    </head>
+
+    <body>
+        <div id="container" class="cls-container">
+            <div class="cls-header">
+                <div class="cls-brand">
+                    <div class="box-inline">
+                        <img height="100px" src="{{ asset('assets/img/boost.png') }}">
+                    </div>
+                </div>
+            </div>
+            <div class="cls-content">
+                <p class="text-info text-3x">:-(</p>
+                <p class="text-main text-semibold text-lg text-uppercase">Page Not Found!</p>
+                <div class="pad-btm text-exception">
+                    Sorry, but the requested link was not found.
+                </div>
+                <div class="row mar-ver text-left">
+                    <div class="col-md-6 col-md-offset-3">
+                    <ul>
+                        <li>
+                            <span class="text-bold">The requested URL is incorrect or incomplete</span>
+                        </li>
+                        <p class="help">Check the URL used, maybe it was written or copied incorrectly.</p>
+                        <li>
+                            <span class="text-bold">The requested link has expired</span>
+                        </li>
+                        <p class="help">The emailed links are valids within <span class="text-danger">72 hours</span>. Beyond that time they are just discarded.</p>
+                    </ul>
+                    </div>
+                </div>
+                <hr class="new-section-sm bord-no">
+            </div>
         </div>
-    </div>
-</article>
-{% endblock %}
+
+        <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+        <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('assets/js/nifty.min.js') }}"></script>
+    </body>
+
+</html>

@@ -66,7 +66,7 @@ class ViewsController extends Controller {
             $em->remove($pre);
             $em->flush();
         }
-        return $this->render('AdminBundle:Admin:nopage.html.twig');
+        return $this->render('AdminBundle:Admin:Login/nopage.html.twig');
     }
     
     public function userAction() {

@@ -23,6 +23,20 @@ class SystemUserRepository extends \Doctrine\ORM\EntityRepository
         return $qb->getQuery()->getResult();
     }
     
+    public function findDuplicatedUsername($username) {
+        $qb = $this->createQueryBuilder('u')
+                ->where('u.username = :username')
+                ->setParameter('username', $username);
+        return $qb->getQuery()->getResult();
+    }
+    
+    public function findDuplicatedPhone($phone) {
+        $qb = $this->createQueryBuilder('u')
+                ->where('u.phone = :phone')
+                ->setParameter('phone', $phone);
+        return $qb->getQuery()->getResult();
+    }
+    
     public function setDisabledByIds($array) {
         $qb = $this->createQueryBuilder('u')
                 ->update()

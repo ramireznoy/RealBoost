@@ -17,6 +17,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Conekta\Conekta;
 use Conekta\Charge;
 use AdminBundle\Entity\RegisterRequest;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class AdminController extends Controller {
 
@@ -40,11 +42,6 @@ class AdminController extends Controller {
                 $response->setData(array('success' => false, 'cause' => 'Ya existe un usuario registrado con ese correo electrónico.'));
                 return $response;
             }
-            /* $users = $em->getRepository('AdminBundle\Entity\SystemUser')->findBy(array('phone' => $mobile));
-              if (count($users) > 0) {
-              $response->setData(array('success' => false, 'cause' => 'Ya existe un usuario registrado con ese número telefónico.'));
-              return $response;
-              } */
 
             $pre = new RegisterRequest();
 
@@ -69,7 +66,7 @@ class AdminController extends Controller {
             return $response;
         }
     }
-    
+
     private function sendConfirmationMail($registerrequest) {
         $message = \Swift_Message::newInstance()
                 ->setContentType("text/html")
@@ -80,38 +77,67 @@ class AdminController extends Controller {
         $this->get('mailer')->send($message);
         return true;
     }
-    
+
+    public function checkAvailabilityAction(Request $request) {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $username = $request->get('username');
+            $takens = $em->getRepository('AdminBundle\Entity\SystemUser')->findDuplicatedUsername($username);
+            if (count($takens) != 0) {
+                return new JsonResponse(array(
+                    'success' => true,
+                    'available' => false
+                ));
+            } else {
+                return new JsonResponse(array(
+                    'success' => true,
+                    'available' => true
+                ));
+            }
+        } catch (\Exception $ex) {
+            return new JsonResponse(array(
+                'success' => false,
+                'message' => 'There has been an unexpected error: ' . $ex->getMessage(),
+                'cause' => $ex->getMessage()
+            ));
+        }
+    }
+
     public function createAndLoginUserAction(Request $request) {
         try {
             $em = $this->getDoctrine()->getManager();
-            $username = mb_strtolower(trim($request->get('username')), 'UTF-8');
-            $email = mb_strtolower(trim($request->get('email')), 'UTF-8');
-            $phone = trim($request->get('phone'));
-            $takens = $em->getRepository('AdminBundle\Entity\SystemUser')->findDuplicates(array('id' => '0', 'username' => $username, 'email' => $email, 'phone' => $phone));
-            if (count($takens) != 0) {
-                $taken = array();
-                foreach ($takens as $user) {
-                    if ($user->getUsername() === $username) {
-                        $taken[] = 'Nombre de usuario';
-                    }
-                    if ($user->getEmail() === $email) {
-                        $taken[] = 'Correo electrónico';
-                    }
-                    if ($user->getPhone() === $phone) {
-                        $taken[] = 'Teléfono';
-                    }
-                }
+            $pre_id = $request->get('pre');
+            if (empty($pre_id)) {
                 return new JsonResponse(array(
                     'success' => false,
-                    'message' => 'Existen usuarios registrados con esos datos en el sistema.',
-                    'cause' => 'Debe utilizar otros datos en su registro para [' . implode(', ', $taken) . ']'
+                    'message' => 'Not enough data',
+                    'cause' => 'Unable to determine the registration request',
                 ));
             }
-            if (empty($username)) {
+            $pre = $em->getRepository('AdminBundle\Entity\RegisterRequest')->find($pre_id);
+            if ($pre == null) {
                 return new JsonResponse(array(
                     'success' => false,
-                    'message' => 'No se reconoce el nombre de usuario',
-                    'cause' => 'Debe indicar un nombre de usuario.',
+                    'message' => 'Not enough data',
+                    'cause' => 'Unable to determine the registration request',
+                ));
+            }
+            $username = $request->get('plaque');
+            $takens = $em->getRepository('AdminBundle\Entity\SystemUser')->findDuplicatedUsername($username);
+            if (count($takens) != 0) {
+                return new JsonResponse(array(
+                    'success' => false,
+                    'message' => 'Plaque ID not available',
+                    'cause' => 'The plaque ID is already taken by another user',
+                ));
+            }
+            $phone = trim($request->get('phone'));
+            $takens = $em->getRepository('AdminBundle\Entity\SystemUser')->findDuplicatedPhone($phone);
+            if (count($takens) != 0) {
+                return new JsonResponse(array(
+                    'success' => false,
+                    'message' => 'Phone already registered',
+                    'cause' => 'The phone number is already registered by another user'
                 ));
             }
             $password1 = trim($request->get('password1'));
@@ -119,95 +145,49 @@ class AdminController extends Controller {
             if (empty($password1) || empty($password2) || $password1 !== $password2) {
                 return new JsonResponse(array(
                     'success' => false,
-                    'message' => 'No se reconoce la contraseña',
-                    'cause' => 'Las contraseñas no coinciden o no fueron indicadas.',
+                    'message' => 'Wrong password',
+                    'cause' => 'The passwords were not defined correctly',
                 ));
             }
-            if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            if (empty($username) || empty($phone) || empty($password1)) {
                 return new JsonResponse(array(
                     'success' => false,
-                    'message' => 'No se reconoce la dirección de correo electrónico',
-                    'cause' => 'No pudo identificarse la dirección de correo electrónico.',
+                    'message' => 'Missing data',
+                    'cause' => 'Some required parameters are missing',
                 ));
             }
-            $firstname = mb_convert_case(trim($request->get('firstname')), MB_CASE_TITLE, 'UTF-8');
-            $lastname = mb_convert_case(trim($request->get('lastname')), MB_CASE_TITLE, 'UTF-8');
-            if (empty($username) || empty($phone) || empty($firstname) || empty($lastname)) {
-                return new JsonResponse(array(
-                    'success' => false,
-                    'message' => 'Faltan datos de registros',
-                    'cause' => 'No se identificaron algunos datos de registro o estos son incorrectos',
-                ));
-            }
-            $group_id = trim($request->get('group'));
-            $group = $em->getRepository('AdminBundle\Entity\UserGroup')->find($group_id);
-            if ($group == null) {
-                return new JsonResponse(array(
-                    'success' => false,
-                    'message' => 'No se reconoce el grupo del usuario.',
-                    'cause' => 'El grupo del usuario no pudo encontrarse o el parámetro no existe'
-                ));
-            }
+            $group = $em->getRepository('AdminBundle\Entity\UserGroup')->find(CGroups::WORKERS);
 
-            $user = null;
-            switch ($group->getId()) {
-                case CGroups::ADMINISTRATORS:
-                    $user = new SystemUser();
-                    break;
-                case CGroups::WORKERS:
-                    $user = new BusinessWorker();
-                    break;
-                case CGroups::USERS:
-                    $user = new Client();
-                    break;
-            }
+            $user = new BusinessWorker();
             $user->setUsername($username);
-            $user->setEmail($email);
+            $user->setEmail($pre->getEmail());
             $user->setPhone($phone);
-            $user->setFirstname($firstname);
-            $user->setLastname($lastname);
+            $user->setFirstname($pre->getFirstname());
+            $user->setLastname($pre->getLastname());
             $user->setEnabled(true);
             $password = $this->get('security.password_encoder')->encodePassword($user, $password1);
             $user->setPassword($password);
             $user->addGroup($group);
 
-            if ($group->getId() != CGroups::ADMINISTRATORS) {
-                $state_id = trim($request->get('state'));
-                $state = $em->getRepository('AdminBundle\Entity\State')->find($state_id);
-                if ($state == null) {
-                    return new JsonResponse(array(
-                        'success' => false,
-                        'message' => 'No se reconoce el Estado del usuario.',
-                        'cause' => 'El Estado del usuario no pudo encontrarse o el parámetro no existe'
-                    ));
-                }
-                $city = mb_convert_case(trim($request->get('city')), MB_CASE_TITLE, 'UTF-8');
-                $address = mb_convert_case(trim($request->get('address')), MB_CASE_TITLE, 'UTF-8');
-                $zip = trim($request->get('zip'));
-                if (empty($address) || empty($city) || !filter_var($zip, FILTER_VALIDATE_INT)) {
-                    return new JsonResponse(array(
-                        'success' => false,
-                        'message' => 'Hay datos incompletos en la dirección',
-                        'cause' => 'La dirección postal contiene información que no pudo ser validada o está ausente.',
-                    ));
-                }
-                $user->setState($state);
-                $user->setCity($city);
-                $user->setAddress($address);
-                $user->setZip($zip);
-            }
-
+            $em->remove($pre);
             $em->persist($user);
             $em->flush();
 
+            // Log in the new user
+            $token = new UsernamePasswordToken($user, $user->getPassword(), "main", $user->getRoles());
+            $this->get("security.token_storage")->setToken($token);
+            $event = new InteractiveLoginEvent($request, $token);
+            $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
+
             return new JsonResponse(array(
                 'success' => true,
-                'message' => 'Se ha registrado un nuevo usuario'
+                'message' => 'The new user has been created',
+                'redirect' => $this->generateUrl('admin_home')
             ));
         } catch (\Exception $ex) {
             return new JsonResponse(array(
                 'success' => false,
-                'message' => 'Ha ocurrido un error mientras se procesaba la solicitud.',
+                'message' => 'An unexpected error has accured.',
                 'cause' => $ex->getMessage()
             ));
         }

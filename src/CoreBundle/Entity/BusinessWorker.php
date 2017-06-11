@@ -26,21 +26,21 @@ class BusinessWorker extends SystemUser {
     /**
      * @var string
      *
-     * @ORM\Column(name="address", type="string", length=255, unique=true)
+     * @ORM\Column(name="address", type="string", length=255, nullable=true)
      */
     private $address;
     
     /**
      * @var string
      *
-     * @ORM\Column(name="city", type="string", length=50, nullable=false)
+     * @ORM\Column(name="city", type="string", length=50, nullable=true)
      */
     private $city;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="zip", type="string", length=10)
+     * @ORM\Column(name="zip", type="string", length=10, nullable=true)
      */
     private $zip;
     

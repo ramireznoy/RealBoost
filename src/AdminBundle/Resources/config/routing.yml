@@ -8,10 +8,10 @@ admin_logout:
     path:     /logout
 admin_register_form:
     path:     /register_form
-    defaults: { _controller: AdminBundle:Views:registerform }    
+    defaults: { _controller: AdminBundle:Views:registerform }
 admin_register:
     path:     /register
-    defaults: { _controller: AdminBundle:Admin:register }    
+    defaults: { _controller: AdminBundle:Admin:register }
 admin_recover_form:
     path:     /recover_form
     defaults: { _controller: AdminBundle:Views:recoverform }
@@ -21,9 +21,12 @@ admin_recover:
 admin_confirmation:
     path:     /confirmation/{token}
     defaults: { _controller: AdminBundle:Views:mailConfirmation }
+admin_checkavailability:
+    path:     /checkavailability
+    defaults: { _controller: AdminBundle:Admin:checkAvailability }
 admin_createandloginuser:
     path:     /createandlogin
-    defaults: { _controller: AdminBundle:Admin:createAndLoginUser }    
+    defaults: { _controller: AdminBundle:Admin:createAndLoginUser }
 
 admin_createuser_view_test:
     path:     /bd/user
@@ -81,7 +84,7 @@ admin_editservice:
 admin_deleteservice:
     path:     /deleteservice
     defaults: { _controller: AdminBundle:Admin:deleteService }
-    
+
 #
 # Categories administration
 #

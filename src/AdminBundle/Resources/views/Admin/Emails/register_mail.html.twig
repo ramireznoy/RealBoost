@@ -1,0 +1,47 @@
+{% extends 'AdminBundle:Admin:Emails/email_base.html.twig' %}
+{% block message %}
+    <table class="main" width="100%" cellpadding="0" cellspacing="0" itemprop="action" itemscope itemtype="http://schema.org/ConfirmAction">
+        <tr>
+            <td class="content-wrap">
+                <meta itemprop="name" content="Confirm Email"/>
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td>
+                            <img src="https://tctechcrunch2011.files.wordpress.com/2013/05/press_logo.png?w=100">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="content-block">
+                            <h3>RealBoost&trade; register request</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="content-block">
+                            Dear <span>{{ pre.firstname }} {{ pre.lastname }}</span>, it is a pleasure welcome you to our service.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="content-block">
+                            To continue with your request and get your credentials, please confirm using the following link:
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="content-block">
+                            For security reasons, this link will be available just for <span class="red">72 hours</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="content-block">
+                            Greetings from the RealBoost&trade; team
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="content-block aligncenter" itemprop="handler" itemscope itemtype="http://schema.org/HttpActionHandler">
+                            <a href="{{ url('admin_confirmation', {'token':pre.urltoken}) }}" class="btn-primary" itemprop="url">Confirm email address</a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+{% endblock %}

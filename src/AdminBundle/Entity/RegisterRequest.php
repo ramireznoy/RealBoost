@@ -10,7 +10,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @ORM\Table(name="admin_registerrequests")
  * @UniqueEntity(fields="email", message="Email already registered")
- * @UniqueEntity(fields="mobile", message="Phone already registered")
  * @ORM\Entity(repositoryClass="AdminBundle\Repository\RegisterRequestRepository")
  */
 class RegisterRequest
@@ -45,20 +44,6 @@ class RegisterRequest
      */
     private $email;
     
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="mobile", type="string", length=20, unique=true)
-     */
-    private $mobile;
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="business", type="string", length=100)
-     */
-    private $business;
-
     /**
      * @var string
      *
@@ -187,7 +172,7 @@ class RegisterRequest
      * @return datetime
      */
     public function getDate() {
-        return $this->date;
+        return $this->timestamp;
     }
     
     /**

@@ -16,8 +16,202 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Conekta\Conekta;
 use Conekta\Charge;
+use AdminBundle\Entity\RegisterRequest;
 
 class AdminController extends Controller {
+
+    public function registerAction(Request $request) {
+        $response = new JsonResponse();
+        try {
+            $em = $this->getDoctrine()->getManager();
+
+            $firstname = $request->get('firstname');
+            $lastname = $request->get('lastname');
+            $email1 = $request->get('email1');
+            $email2 = $request->get('email2');
+
+            if (isset($email1) && isset($email2) && ($email1 != $email2)) {
+                $response->setData(array('success' => false, 'cause' => 'The mail addresses are missing or does not match'));
+                return $response;
+            }
+
+            $users = $em->getRepository('AdminBundle\Entity\SystemUser')->findBy(array('email' => $email1));
+            if (count($users) > 0) {
+                $response->setData(array('success' => false, 'cause' => 'Ya existe un usuario registrado con ese correo electrónico.'));
+                return $response;
+            }
+            /* $users = $em->getRepository('AdminBundle\Entity\SystemUser')->findBy(array('phone' => $mobile));
+              if (count($users) > 0) {
+              $response->setData(array('success' => false, 'cause' => 'Ya existe un usuario registrado con ese número telefónico.'));
+              return $response;
+              } */
+
+            $pre = new RegisterRequest();
+
+            $pre->setFirstname(trim(mb_convert_case($firstname, MB_CASE_TITLE, 'UTF-8')));
+            $pre->setLastname(trim(mb_convert_case($lastname, MB_CASE_TITLE, 'UTF-8')));
+            $pre->setEmail(trim(strtolower($email1)));
+            $random_hash = bin2hex(openssl_random_pseudo_bytes(24));
+            $pre->setUrltoken($random_hash);
+
+            $em->persist($pre);
+            $em->flush();
+            if ($this->sendConfirmationMail($pre)) {
+                $response->setData(array('success' => true));
+            } else {
+                $em->remove($pre);
+                $em->flush();
+                $response->setData(array('success' => false, 'cause' => 'Sorry... The preregistering service is not available right now. Please try again later'));
+            }
+            return $response;
+        } catch (\Exception $ex) {
+            $response->setData(array('success' => false, 'cause' => 'There has been an error while processing the request. ' . $ex->getMessage()));
+            return $response;
+        }
+    }
+    
+    private function sendConfirmationMail($registerrequest) {
+        $message = \Swift_Message::newInstance()
+                ->setContentType("text/html")
+                ->setSubject('RealBoost register request')
+                ->setFrom('registration@realboost.com')
+                ->setTo($registerrequest->getEmail())
+                ->setBody($this->renderView('AdminBundle:Admin:Emails/register_mail.html.twig', array('pre' => $registerrequest)));
+        $this->get('mailer')->send($message);
+        return true;
+    }
+    
+    public function createAndLoginUserAction(Request $request) {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $username = mb_strtolower(trim($request->get('username')), 'UTF-8');
+            $email = mb_strtolower(trim($request->get('email')), 'UTF-8');
+            $phone = trim($request->get('phone'));
+            $takens = $em->getRepository('AdminBundle\Entity\SystemUser')->findDuplicates(array('id' => '0', 'username' => $username, 'email' => $email, 'phone' => $phone));
+            if (count($takens) != 0) {
+                $taken = array();
+                foreach ($takens as $user) {
+                    if ($user->getUsername() === $username) {
+                        $taken[] = 'Nombre de usuario';
+                    }
+                    if ($user->getEmail() === $email) {
+                        $taken[] = 'Correo electrónico';
+                    }
+                    if ($user->getPhone() === $phone) {
+                        $taken[] = 'Teléfono';
+                    }
+                }
+                return new JsonResponse(array(
+                    'success' => false,
+                    'message' => 'Existen usuarios registrados con esos datos en el sistema.',
+                    'cause' => 'Debe utilizar otros datos en su registro para [' . implode(', ', $taken) . ']'
+                ));
+            }
+            if (empty($username)) {
+                return new JsonResponse(array(
+                    'success' => false,
+                    'message' => 'No se reconoce el nombre de usuario',
+                    'cause' => 'Debe indicar un nombre de usuario.',
+                ));
+            }
+            $password1 = trim($request->get('password1'));
+            $password2 = trim($request->get('password2'));
+            if (empty($password1) || empty($password2) || $password1 !== $password2) {
+                return new JsonResponse(array(
+                    'success' => false,
+                    'message' => 'No se reconoce la contraseña',
+                    'cause' => 'Las contraseñas no coinciden o no fueron indicadas.',
+                ));
+            }
+            if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                return new JsonResponse(array(
+                    'success' => false,
+                    'message' => 'No se reconoce la dirección de correo electrónico',
+                    'cause' => 'No pudo identificarse la dirección de correo electrónico.',
+                ));
+            }
+            $firstname = mb_convert_case(trim($request->get('firstname')), MB_CASE_TITLE, 'UTF-8');
+            $lastname = mb_convert_case(trim($request->get('lastname')), MB_CASE_TITLE, 'UTF-8');
+            if (empty($username) || empty($phone) || empty($firstname) || empty($lastname)) {
+                return new JsonResponse(array(
+                    'success' => false,
+                    'message' => 'Faltan datos de registros',
+                    'cause' => 'No se identificaron algunos datos de registro o estos son incorrectos',
+                ));
+            }
+            $group_id = trim($request->get('group'));
+            $group = $em->getRepository('AdminBundle\Entity\UserGroup')->find($group_id);
+            if ($group == null) {
+                return new JsonResponse(array(
+                    'success' => false,
+                    'message' => 'No se reconoce el grupo del usuario.',
+                    'cause' => 'El grupo del usuario no pudo encontrarse o el parámetro no existe'
+                ));
+            }
+
+            $user = null;
+            switch ($group->getId()) {
+                case CGroups::ADMINISTRATORS:
+                    $user = new SystemUser();
+                    break;
+                case CGroups::WORKERS:
+                    $user = new BusinessWorker();
+                    break;
+                case CGroups::USERS:
+                    $user = new Client();
+                    break;
+            }
+            $user->setUsername($username);
+            $user->setEmail($email);
+            $user->setPhone($phone);
+            $user->setFirstname($firstname);
+            $user->setLastname($lastname);
+            $user->setEnabled(true);
+            $password = $this->get('security.password_encoder')->encodePassword($user, $password1);
+            $user->setPassword($password);
+            $user->addGroup($group);
+
+            if ($group->getId() != CGroups::ADMINISTRATORS) {
+                $state_id = trim($request->get('state'));
+                $state = $em->getRepository('AdminBundle\Entity\State')->find($state_id);
+                if ($state == null) {
+                    return new JsonResponse(array(
+                        'success' => false,
+                        'message' => 'No se reconoce el Estado del usuario.',
+                        'cause' => 'El Estado del usuario no pudo encontrarse o el parámetro no existe'
+                    ));
+                }
+                $city = mb_convert_case(trim($request->get('city')), MB_CASE_TITLE, 'UTF-8');
+                $address = mb_convert_case(trim($request->get('address')), MB_CASE_TITLE, 'UTF-8');
+                $zip = trim($request->get('zip'));
+                if (empty($address) || empty($city) || !filter_var($zip, FILTER_VALIDATE_INT)) {
+                    return new JsonResponse(array(
+                        'success' => false,
+                        'message' => 'Hay datos incompletos en la dirección',
+                        'cause' => 'La dirección postal contiene información que no pudo ser validada o está ausente.',
+                    ));
+                }
+                $user->setState($state);
+                $user->setCity($city);
+                $user->setAddress($address);
+                $user->setZip($zip);
+            }
+
+            $em->persist($user);
+            $em->flush();
+
+            return new JsonResponse(array(
+                'success' => true,
+                'message' => 'Se ha registrado un nuevo usuario'
+            ));
+        } catch (\Exception $ex) {
+            return new JsonResponse(array(
+                'success' => false,
+                'message' => 'Ha ocurrido un error mientras se procesaba la solicitud.',
+                'cause' => $ex->getMessage()
+            ));
+        }
+    }
 
     public function createUserAction(Request $request) {
         try {
@@ -457,9 +651,9 @@ class AdminController extends Controller {
             if ($new) {
                 $message = 'Se ha registrado un nuevo servicio';
             } else {
-                $message = 'Se ha modificado el servicio <strong>'.$service->getName().'</strong>';
+                $message = 'Se ha modificado el servicio <strong>' . $service->getName() . '</strong>';
             }
-            
+
             return new JsonResponse(array(
                 'success' => true,
                 'message' => $message
@@ -472,7 +666,7 @@ class AdminController extends Controller {
             ));
         }
     }
-    
+
     public function deleteServiceAction(Request $request) {
         try {
             $em = $this->getDoctrine()->getManager();
@@ -535,7 +729,7 @@ class AdminController extends Controller {
             } else {
                 $type->setEnabled(false);
             }
-            
+
             $em->persist($type);
             $em->flush();
 
@@ -551,7 +745,7 @@ class AdminController extends Controller {
             ));
         }
     }
-    
+
     public function editCategoryAction(Request $request) {
         try {
             $new = false;
@@ -599,7 +793,7 @@ class AdminController extends Controller {
             } else {
                 $category->setEnabled(false);
             }
-            
+
             if ($new) {
                 $em->persist($category);
             }
@@ -608,9 +802,9 @@ class AdminController extends Controller {
             if ($new) {
                 $message = 'Se ha registrado un nuevo servicio';
             } else {
-                $message = 'Se ha modificado el servicio <strong>'.$category->getName().'</strong>';
+                $message = 'Se ha modificado el servicio <strong>' . $category->getName() . '</strong>';
             }
-            
+
             return new JsonResponse(array(
                 'success' => true,
                 'message' => $message
@@ -623,7 +817,7 @@ class AdminController extends Controller {
             ));
         }
     }
-    
+
     public function deleteCategoryAction(Request $request) {
         try {
             $em = $this->getDoctrine()->getManager();
@@ -657,12 +851,12 @@ class AdminController extends Controller {
             ));
         }
     }
-    
+
     public function createModelAction(Request $request) {
         try {
             $em = $this->getDoctrine()->getManager();
             $name = mb_convert_case(trim($request->get('name')), MB_CASE_LOWER, 'UTF-8');
-            
+
             $brand_id = trim($request->get('brand'));
             $brand = $em->getRepository('AdminBundle\Entity\CarBrand')->find($brand_id);
             if ($brand == null) {
@@ -680,7 +874,7 @@ class AdminController extends Controller {
                     'message' => 'No se reconoce la categoría del auto.',
                     'cause' => 'La categoría del auto no pudo encontrarse o el parámetro no existe'
                 ));
-            }            
+            }
             $takens = $em->getRepository('AdminBundle\Entity\BrandModel')->findDuplicates(array('id' => '0', 'name' => $name, 'brand' => $brand, 'type' => $type));
             if (count($takens) != 0) {
                 return new JsonResponse(array(
@@ -700,7 +894,7 @@ class AdminController extends Controller {
             $model->setName($name);
             $model->setBrand($brand);
             $model->setType($type);
-            
+
             $em->persist($model);
             $em->flush();
 
@@ -716,7 +910,7 @@ class AdminController extends Controller {
             ));
         }
     }
-    
+
     public function editModelAction(Request $request) {
         try {
             $new = false;
@@ -739,7 +933,7 @@ class AdminController extends Controller {
                     ));
                 }
             }
-            $name = mb_convert_case(trim($request->get('name')), MB_CASE_LOWER, 'UTF-8');            
+            $name = mb_convert_case(trim($request->get('name')), MB_CASE_LOWER, 'UTF-8');
             $brand_id = trim($request->get('brand'));
             $brand = $em->getRepository('AdminBundle\Entity\CarBrand')->find($brand_id);
             if ($brand == null) {
@@ -776,16 +970,16 @@ class AdminController extends Controller {
             $model->setName($name);
             $model->setBrand($brand);
             $model->setType($type);
-            
+
             if ($new) {
                 $em->persist($model);
             }
             $em->flush();
-            
+
             if ($new) {
                 $message = 'Se ha registrado el nuevo modelo de auto';
             } else {
-                $message = 'Se ha modificado el modelo '.$model->getFullName();
+                $message = 'Se ha modificado el modelo ' . $model->getFullName();
             }
 
             return new JsonResponse(array(
@@ -800,7 +994,7 @@ class AdminController extends Controller {
             ));
         }
     }
-    
+
     public function deleteModelAction(Request $request) {
         try {
             $em = $this->getDoctrine()->getManager();
@@ -834,7 +1028,7 @@ class AdminController extends Controller {
             ));
         }
     }
-    
+
     public function editMerchandiseAction(Request $request) {
         try {
             $new = false;
@@ -876,7 +1070,7 @@ class AdminController extends Controller {
                     'cause' => 'La categoría del auto no pudo encontrarse o el parámetro no existe'
                 ));
             }
-            
+
             $takens = $em->getRepository('CoreBundle\Entity\Merchandise')->findDuplicates(array('id' => $merchandise_id, 'service' => $service, 'cartype' => $type));
             if (count($takens) != 0) {
                 return new JsonResponse(array(
@@ -885,7 +1079,7 @@ class AdminController extends Controller {
                     'cause' => 'Ya existe una oferta previa para esa combinación de servicio y tipo de auto.'
                 ));
             }
-            
+
             if (empty($price) || !filter_var($price, FILTER_VALIDATE_FLOAT)) {
                 return new JsonResponse(array(
                     'success' => false,
@@ -899,17 +1093,17 @@ class AdminController extends Controller {
             } else {
                 $merchandise->setEnabled(false);
             }
-            
-            $merchandise->setPrice(number_format((float)$price, 2, '.', ''));
+
+            $merchandise->setPrice(number_format((float) $price, 2, '.', ''));
             $merchandise->setCurrency('MXN');
             $merchandise->setCartype($type);
             $merchandise->setService($service);
-            
+
             if ($new) {
                 $em->persist($merchandise);
             }
             $em->flush();
-            
+
             if ($new) {
                 $message = 'Se ha registrado una nueva oferta de servicio';
             } else {
@@ -928,7 +1122,7 @@ class AdminController extends Controller {
             ));
         }
     }
-    
+
     public function deleteMerchandiseAction(Request $request) {
         try {
             $em = $this->getDoctrine()->getManager();
@@ -962,7 +1156,7 @@ class AdminController extends Controller {
             ));
         }
     }
-    
+
     public function sellServiceAction(Request $request) {
         try {
             $em = $this->getDoctrine()->getManager();

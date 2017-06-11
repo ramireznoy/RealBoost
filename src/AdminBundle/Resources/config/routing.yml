@@ -18,7 +18,12 @@ admin_recover_form:
 admin_recover:
     path:     /recover
     defaults: { _controller: AdminBundle:Admin:recover }
-
+admin_confirmation:
+    path:     /confirmation/{token}
+    defaults: { _controller: AdminBundle:Views:mailConfirmation }
+admin_createandloginuser:
+    path:     /createandlogin
+    defaults: { _controller: AdminBundle:Admin:createAndLoginUser }    
 
 admin_createuser_view_test:
     path:     /bd/user

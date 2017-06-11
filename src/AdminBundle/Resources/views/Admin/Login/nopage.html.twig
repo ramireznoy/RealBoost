@@ -1,0 +1,26 @@
+{% extends 'EPAYFrontendBundle:Base:base_docs.html.twig' %}
+{% block css %}
+    <link rel="stylesheet" href="{{ asset('assets/css/contact.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/error.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/register.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/toastr.min.css') }}">
+{% endblock %}
+{% block main %}
+<article class="nav-animation-element">
+    <div class="content">
+        <div class="number"><span class="fa fa-warning"></span></div>
+        <div class="message">
+            <h2>¡Vaya...! La página solicitada no existe :-/</h2>
+            <p>Estimado usuario, el vínculo utilizado no está disponible. Esto puede ocurrir por dos motivos:</p>
+            <ul>
+                <li><span>La dirección solicitada es incorrecta o está incompleta</span>                    
+                </li>
+                <p class="help">Verfique la dirección URL utilizada, tal vez se haya escrito o copiado incorrectamente.</p>
+                <li><span>El vínculo utilizado caducó</span>                    
+                </li>
+                <p class="help">Los vínculos enviados por correo electrónico son válidos durante las <span class="red">72 horas</span> siguientes. Fuera de ese lapso, los accesos son descartados.</p>
+            </ul>
+        </div>
+    </div>
+</article>
+{% endblock %}

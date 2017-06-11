@@ -51,6 +51,24 @@ class ViewsController extends Controller {
         }
     }
     
+    public function mailConfirmationAction($token, Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $_pre = $em->getRepository('AdminBundle\Entity\RegisterRequest')->findBy(array('urltoken' => $token));
+        $pre = null;
+        if (count($_pre) > 0) {
+            $pre = $_pre[0];
+            $minimaldate = (new \DateTime('now'))->modify('-3 days');
+            if ($pre->getDate() > $minimaldate) {
+                return $this->render('AdminBundle:Admin:Login/complete_register.html.twig', array('pre' => $pre));
+            }
+        }
+        if ($pre != null) {
+            $em->remove($pre);
+            $em->flush();
+        }
+        return $this->render('AdminBundle:Admin:nopage.html.twig');
+    }
+    
     public function userAction() {
         return $this->render('AdminBundle:Admin/BackDoor:user.html.twig');
     }

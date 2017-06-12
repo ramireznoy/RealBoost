@@ -6,6 +6,9 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>RealBoost</title>
+        
+        <link href="{{ asset('assets/plugins/pace/pace.min.css') }}" rel="stylesheet">
+        <script src="{{ asset('assets/plugins/pace/pace.min.js') }}"></script>
 
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
         <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -19,8 +22,6 @@
         <link href="{{ asset('assets/plugins/datatables/media/css/dataTables.bootstrap.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/plugins/datatables/extensions/Responsive/css/dataTables.responsive.css') }}" rel="stylesheet">
 
-        <link href="{{ asset('assets/plugins/pace/pace.min.css') }}" rel="stylesheet">
-        <script src="{{ asset('assets/plugins/pace/pace.min.js') }}"></script>
         <link href="{{ asset('assets/plugins/fullcalendar/fullcalendar.min.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/plugins/fullcalendar/nifty-skin/fullcalendar-nifty.min.css') }}" rel="stylesheet">
       
@@ -123,7 +124,7 @@
 
                                     <div class="pad-all text-right">
                                         <a href="{{ path('admin_logout') }}" class="btn btn-primary">
-                                            <i class="demo-pli-unlock"></i> Salir
+                                            <i class="demo-pli-unlock"></i> Logout
                                         </a>
                                     </div>
                                 </div>
@@ -168,7 +169,7 @@
                                                 <i class="demo-psi-repair icon-lg icon-fw"></i> Preferences
                                             </a>
                                             <a href="{{ path('admin_logout') }}" class="list-group-item">
-                                                <i class="demo-pli-unlock icon-fw"></i> Exit
+                                                <i class="demo-pli-unlock icon-fw"></i> Logout
                                             </a>
                                         </div>
                                     </div>
@@ -201,16 +202,12 @@
     <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/nifty.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/bootstrap-select/bootstrap-select.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/morris-js/morris.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/morris-js/raphael-js/raphael.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/sparkline/jquery.sparkline.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/jquery.blockui.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/plugins/datatables/jquery.blockui.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('assets/js/demo/dashboard.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables/media/js/jquery.dataTables.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables/media/js/dataTables.bootstrap.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('assets/js/demo/dashboard.js') }}"></script>
     <script src="{{ asset('assets/plugins/fullcalendar/lib/moment.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/fullcalendar/lib/jquery-ui.custom.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/fullcalendar/fullcalendar.min.js') }}"></script>

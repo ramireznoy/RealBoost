@@ -10,10 +10,10 @@ use AdminBundle\Entity\State;
 /**
  * Client
  *
- * @ORM\Table(name="core_clients")
- * @ORM\Entity(repositoryClass="CoreBundle\Repository\ClientRepository")
+ * @ORM\Table(name="core_agencies")
+ * @ORM\Entity(repositoryClass="CoreBundle\Repository\AgencyRepository")
  */
-class Client extends SystemUser {
+class Agency extends SystemUser {
 
     /**
      * @var State

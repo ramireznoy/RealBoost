@@ -16,33 +16,61 @@ use AdminBundle\Entity\State;
 class BusinessWorker extends SystemUser {
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="business_name", type="string", length=255, nullable=true)
+     */
+    private $business_name;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="business_title", type="string", length=255, nullable=true)
+     */
+    private $business_title;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="business_phone", type="string", length=20, nullable=true)
+     */
+    private $business_phone;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="business_logo", type="string", nullable=true)
+     */
+    private $business_logo;
+    
+    /**
      * @var \AdminBundle\Entity\State
      * 
      * @ORM\ManyToOne(targetEntity="\AdminBundle\Entity\State")
-     * @ORM\JoinColumn(name="state", referencedColumnName="id")
+     * @ORM\JoinColumn(name="business_state", referencedColumnName="id")
      */
-    private $state;
+    private $business_state;
     
     /**
      * @var string
      *
-     * @ORM\Column(name="address", type="string", length=255, nullable=true)
+     * @ORM\Column(name="business_address", type="string", length=255, nullable=true)
      */
-    private $address;
+    private $business_address;
     
     /**
      * @var string
      *
-     * @ORM\Column(name="city", type="string", length=50, nullable=true)
+     * @ORM\Column(name="business_city", type="string", length=50, nullable=true)
      */
-    private $city;
+    private $business_city;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="zip", type="string", length=10, nullable=true)
+     * @ORM\Column(name="business_zip", type="string", length=10, nullable=true)
      */
-    private $zip;
+    private $business_zip;
 
     /**
      * Constructor for BusinessWorker
@@ -53,88 +81,168 @@ class BusinessWorker extends SystemUser {
     }
     
     /**
-     * Get state
+     * Get business name
+     * 
+     * @return string
+     */
+    public function getBusinessName() {
+        return $this->business_name;
+    }
+
+    /**
+     * Get business title or position
+     * 
+     * @return string
+     */
+    public function getBusinessTitle() {
+        return $this->business_title;
+    }
+
+    /**
+     * Get business phone
+     * 
+     * @return string
+     */
+    public function getBusinessPhone() {
+        return $this->business_phone;
+    }
+
+    /**
+     * Set business name
+     * 
+     * @param string $business_name
+     * @return BusinessWorker
+     */
+    public function setBusinessName($business_name) {
+        $this->business_name = $business_name;
+        return $this;
+    }
+
+    /**
+     * Set business title or position
+     * 
+     * @param string $business_title
+     * @return BusinessWorker
+     */
+    public function setBusinessTitle($business_title) {
+        $this->business_title = $business_title;
+        return $this;
+    }
+
+    /**
+     * Set business phone
+     * 
+     * @param string $business_phone
+     * @return BusinessWorker
+     */
+    public function setBusinessPhone($business_phone) {
+        $this->business_phone = $business_phone;
+        return $this;
+    }
+    
+    /**
+     * Get business logo
+     * 
+     * @return string
+     */
+    public function getBusinessLogo() {
+        return $this->business_logo;
+    }
+
+    /**
+     * Set business logo
+     * 
+     * @param string $business_logo
+     * @return BusinessWorker
+     */
+    public function setBusinessLogo($business_logo) {
+        $this->business_logo = $business_logo;
+        return $this;
+    }
+            
+    /**
+     * Get business_state
      * 
      * @return \AdminBundle\Entity\State
      */
-    public function getState() {
-        return $this->state;
+    public function getBusinessState() {
+        return $this->business_state;
     }
     
     /**
-     * Set state
+     * Set business_state
      * 
-     * @param \AdminBundle\Entity\State $state
-     * @return Client
-     */
-    public function setState(State $state) {
-        $this->state = $state;
-        
-        return $this;
-    }
-
-    /**
-     * Set address
-     *
-     * @param string $address
-     *
-     * @return Client
-     */
-    public function setAddress($address) {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    /**
-     * Get address
-     *
-     * @return string
-     */
-    public function getAddress() {
-        return $this->address;
-    }
-    
-    /**
-     * Set city
-     * 
-     * @param srtring $city
+     * @param \AdminBundle\Entity\State $business_state
      * @return BusinessWorker
      */
-    public function setCity($city) {
-        $this->city = $city;
+    public function setBusinessState(State $business_state) {
+        $this->business_state = $business_state;
+        
+        return $this;
+    }
+
+    /**
+     * Set business_address
+     *
+     * @param string $business_address
+     *
+     * @return BusinessWorker
+     */
+    public function setBusinessAddress($business_address) {
+        $this->business_address = $business_address;
+
+        return $this;
+    }
+
+    /**
+     * Get business_address
+     *
+     * @return string
+     */
+    public function getBusinessAddress() {
+        return $this->business_address;
+    }
+    
+    /**
+     * Set business_city
+     * 
+     * @param srtring $business_city
+     * @return BusinessWorker
+     */
+    public function setBusinessCity($business_city) {
+        $this->business_city = $business_city;
         
         return $this;
     }
     
     /**
-     * Get city
+     * Get business_city
      * 
      * @return string
      */
-    public function getCity() {
-        return $this->city;
+    public function getBusinessCity() {
+        return $this->business_city;
     }
 
     /**
-     * Set zip
+     * Set business_zip
      *
-     * @param string $zip
+     * @param string $business_zip
      *
-     * @return Client
+     * @return BusinessWorker
      */
-    public function setZip($zip) {
-        $this->zip = $zip;
+    public function setBusinessZip($business_zip) {
+        $this->business_zip = $business_zip;
 
         return $this;
     }
 
     /**
-     * Get zip
+     * Get business_zip
      *
      * @return string
      */
-    public function getZip() {
-        return $this->zip;
+    public function getBusinessZip() {
+        return $this->business_zip;
     }
 }

@@ -15,7 +15,7 @@ use AdminBundle\Constants\CRoles;
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="user_type", type="string")
  * @ORM\DiscriminatorMap(
- *     {"system"="SystemUser", "client"="\CoreBundle\Entity\Client", "worker"="\CoreBundle\Entity\BusinessWorker"}
+ *     {"system"="SystemUser", "agency"="\CoreBundle\Entity\Agency", "worker"="\CoreBundle\Entity\BusinessWorker"}
  * )
  */
 class SystemUser implements AdvancedUserInterface, \Serializable {

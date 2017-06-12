@@ -85,23 +85,23 @@ class ViewsController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $users = $em->getRepository('AdminBundle\Entity\SystemUser')->findBy(array('enabled' => true));
 
-        $table = new TableModel('fa fa-user', 'Usuarios del Sistema');
+        $table = new TableModel('fa fa-user', 'System Users');
         $columns = array(
-            new ColumnModel('10%', 'Usuario'),
-            new ColumnModel('20%', 'Nombre(s)'),
-            new ColumnModel('20%', 'Apellidos'),
-            new ColumnModel('10%', 'Correo'),
-            new ColumnModel('15%', 'Teléfono'),
-            new ColumnModel('15%', 'Tipo')
+            new ColumnModel('20%', 'First name'),
+            new ColumnModel('20%', 'Last name'),
+            new ColumnModel('10%', 'Plaque'),
+            new ColumnModel('10%', 'Email'),
+            new ColumnModel('15%', 'Phone'),
+            new ColumnModel('15%', 'Type')
         );
         $table->setColumns($columns);
         $table->setActions(array());
         $rows = array();
         foreach ($users as $user) {
             $_u = array();
-            $_u[] = $user->getUsername();
             $_u[] = $user->getFirstname();
             $_u[] = $user->getLastname();
+            $_u[] = $user->getUsername();
             $_u[] = $user->getEmail();
             $_u[] = $user->getPhone();
             $_u[] = $user->getUserType();

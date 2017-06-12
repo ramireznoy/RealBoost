@@ -482,17 +482,17 @@ class SystemUser implements AdvancedUserInterface, \Serializable {
         foreach ($roles as $role) {
             switch ($role) {
                 case 'ROLE_WORK':
-                    $response[] = 'Trabajador';
+                    $response[] = 'Worker';
                     break;
                 case 'ROLE_AUDITORY':
                     $response[] = 'Auditor';
                     break;
                 case 'ROLE_MANAGEMENT':
-                    $response[] = 'Directivo';
+                    $response[] = 'Manager';
                     break;
                 case 'ROLE_ADMINISTRATION':
-                    $response[] = 'Administrador';
-                    break;                
+                    $response[] = 'Administrator';
+                    break;
             }
         }
         if (count($response) == 0) {

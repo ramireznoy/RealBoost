@@ -34,19 +34,6 @@ admin_createandloginuser:
     path:     /createandlogin
     defaults: { _controller: AdminBundle:Admin:createAndLogin }
 
-admin_createuser_view_test:
-    path:     /bd/user
-    defaults: { _controller: AdminBundle:Views:user }
-admin_createworker_view_test:
-    path:     /bd/worker
-    defaults: { _controller: AdminBundle:Views:worker }
-admin_createclient_view_test:
-    path:     /bd/client
-    defaults: { _controller: AdminBundle:Views:client }
-admin_createservice_view_test:
-    path:     /bd/service
-    defaults: { _controller: AdminBundle:Views:service }
-
 #
 # Users administration
 #

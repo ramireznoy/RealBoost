@@ -4,7 +4,7 @@ security:
     role_hierarchy:
         ROLE_WORK:              ROLE_USER
         ROLE_ADMINISTRATION:    ROLE_WORK
-    
+
     encoders:
         AdminBundle\Entity\SystemUser:
             algorithm: bcrypt
@@ -30,6 +30,13 @@ security:
                 csrf_token_generator: security.csrf.token_manager
                 default_target_path: admin_home
 
+            remember_me:
+                secret:   '%secret%'
+                # Three days for session storage
+                lifetime: 259200
+                secure:   true
+                path:     admin_home
+
             logout:
                 path:   admin_logout
                 target: admin_login
@@ -40,10 +47,9 @@ security:
 
             # form_login: ~
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
-    
+
     access_control:
         - { path: ^/rest, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/bd, roles: ROLE_ADMINISTRATION }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         - { path: ^/recover, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
@@ -52,5 +58,5 @@ security:
         - { path: ^/resetpassword, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         - { path: ^/resetandlogin, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         - { path: ^/createandlogin, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
-        - { path: ^/, roles: IS_AUTHENTICATED_FULLY, requires_channel: https }
+        - { path: ^/, roles: [IS_AUTHENTICATED_FULLY,IS_AUTHENTICATED_REMEMBERED], requires_channel: https }
         - { path: ^/realtors, roles: IS_AUTHENTICATED_ANONYMOUSLY }

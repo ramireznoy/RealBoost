@@ -56,12 +56,12 @@
                             <li class="dropdown">
                                 <a href="#" data-toggle="dropdown" class="dropdown-toggle">
                                     <i class="demo-pli-bell"></i>
-                                    {#                                    <span class="badge badge-header badge-danger"></span>#}
+                                    {#<span class="badge badge-header badge-danger"></span>#}
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-md">
                                     <div class="pad-all bord-btm">
-                                        <p class="text-semibold text-main mar-no">Sin notificaciones.</p>
+                                        <p class="text-semibold text-main mar-no">No notifications</p>
                                     </div>
                                     <!--<div class="nano scrollable">
                                         <div class="nano-content">
@@ -105,18 +105,18 @@
                                     <ul class="head-list">
                                         <li>
                                             <a href="#">
-                                                <i class="demo-pli-male icon-lg icon-fw"></i> Perfil
+                                                <i class="demo-pli-male icon-lg icon-fw"></i> My profile
                                             </a>
                                         </li>
                                         <li>
                                             <a href="#">
                                                 <span class="badge badge-danger pull-right"></span>
-                                                <i class="demo-pli-mail icon-lg icon-fw"></i> Mensajes
+                                                <i class="demo-pli-mail icon-lg icon-fw"></i> Messages
                                             </a>
                                         </li>
                                         <li>
                                             <a href="#">
-                                                <i class="demo-psi-repair icon-lg icon-fw"></i> Configuración
+                                                <i class="demo-psi-repair icon-lg icon-fw"></i> Preferences
                                             </a>
                                         </li>
                                     </ul>
@@ -162,13 +162,13 @@
                                         </div>
                                         <div id="profile-nav" class="collapse list-group bg-trans">
                                             <a href="#" class="list-group-item">
-                                                <i class="demo-pli-male icon-lg icon-fw"></i> Perfil
+                                                <i class="demo-pli-male icon-lg icon-fw"></i> My profile
                                             </a>
                                             <a href="#" class="list-group-item">
-                                                <i class="demo-psi-repair icon-lg icon-fw"></i> Ajustes
+                                                <i class="demo-psi-repair icon-lg icon-fw"></i> Preferences
                                             </a>
                                             <a href="{{ path('admin_logout') }}" class="list-group-item">
-                                                <i class="demo-pli-unlock icon-fw"></i> Salir
+                                                <i class="demo-pli-unlock icon-fw"></i> Exit
                                             </a>
                                         </div>
                                     </div>
@@ -187,7 +187,7 @@
             </div>
 
             <footer id="footer">
-                <p class="pad-lft">&#0169; 2016 Bawii</p>
+                <p class="pad-lft">&#0169; 2017 RealBoost.com</p>
             </footer>
 
             <button class="scroll-top btn">
@@ -250,7 +250,7 @@
                     unblockUI();
                     $.niftyNoty({
                         type: 'danger',
-                        message: 'No se pudo acceder el recurso solicitado ' + url,
+                        message: 'Was not possible to access the required resource: ' + url,
                         container: 'floating',
                         timer: 5000
                     });
@@ -303,7 +303,7 @@
                 error: function () {
                     $.niftyNoty({
                         type: 'danger',
-                        message: '<strong>No se pudo procesar la solicitud.</strong> Ocurrió un error en el envío.',
+                        message: '<strong>Was not possible to process the request.</strong> Send error.',
                         container: 'floating',
                         timer: 5000
                     });

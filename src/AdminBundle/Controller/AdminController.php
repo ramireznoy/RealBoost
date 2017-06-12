@@ -32,7 +32,7 @@ class AdminController extends Controller {
             $email1 = $request->get('email1');
             $email2 = $request->get('email2');
 
-            if (isset($email1) && isset($email2) && ($email1 != $email2)) {
+            if (!isset($email1) && !isset($email2) && ($email1 != $email2)) {
                 $response->setData(array('success' => false, 'cause' => 'The mail addresses are missing or does not match'));
                 return $response;
             }
@@ -66,6 +66,37 @@ class AdminController extends Controller {
             return $response;
         }
     }
+    
+    public function recoverAction(Request $request) {
+        $response = new JsonResponse();
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $email = $request->get('email');
+            if (!isset($email) || empty($email)) {
+                $response->setData(array('success' => false, 'cause' => 'The mail addresses is missing'));
+                return $response;
+            }
+            $users = $em->getRepository('AdminBundle\Entity\SystemUser')->findBy(array('email' => $email));
+            if (count($users) == 0) {
+                // Just finish and pretend everything is normal for the user
+                $response->setData(array('success' => true));
+                return $response;
+            }
+            $user = $users[0];
+            $random_hash = bin2hex(openssl_random_pseudo_bytes(24));
+            $user->setAccesstoken($random_hash);
+            if ($this->sendResetMail($user)) {
+                $response->setData(array('success' => true));
+            } else {
+                $response->setData(array('success' => false, 'cause' => 'Sorry... The recover service is not available right now. Please try again later'));
+            }
+            $em->flush();
+            return $response;
+        } catch (\Exception $ex) {
+            $response->setData(array('success' => false, 'cause' => 'There has been an error while processing the request. ' . $ex->getMessage()));
+            return $response;
+        }
+    }
 
     private function sendConfirmationMail($registerrequest) {
         $message = \Swift_Message::newInstance()
@@ -74,6 +105,17 @@ class AdminController extends Controller {
                 ->setFrom('registration@realboost.com')
                 ->setTo($registerrequest->getEmail())
                 ->setBody($this->renderView('AdminBundle:Admin:Emails/register_mail.html.twig', array('pre' => $registerrequest)));
+        $this->get('mailer')->send($message);
+        return true;
+    }
+    
+    private function sendResetMail($user) {
+        $message = \Swift_Message::newInstance()
+                ->setContentType("text/html")
+                ->setSubject('RealBoost password reset request')
+                ->setFrom('registration@realboost.com')
+                ->setTo($user->getEmail())
+                ->setBody($this->renderView('AdminBundle:Admin:Emails/reset_mail.html.twig', array('user' => $user)));
         $this->get('mailer')->send($message);
         return true;
     }
@@ -102,8 +144,70 @@ class AdminController extends Controller {
             ));
         }
     }
+    
+    public function resetAndLoginAction(Request $request) {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $user_id = $request->get('user');
+            if (empty($user_id)) {
+                return new JsonResponse(array(
+                    'success' => false,
+                    'message' => 'Not enough data',
+                    'cause' => 'Unable to determine the target user',
+                ));
+            }
+            $user = $em->getRepository('AdminBundle\Entity\SystemUser')->find($user_id);
+            if ($user == null) {
+                return new JsonResponse(array(
+                    'success' => false,
+                    'message' => 'Not enough data',
+                    'cause' => 'Unable to determine the target user',
+                ));
+            }
+            $accesstoken = $request->get('token');
+            if ($user->getAccessToken() != $accesstoken) {
+                return new JsonResponse(array(
+                    'success' => false,
+                    'message' => 'Bad data',
+                    'cause' => 'The requested user has no reset pending',
+                ));
+            }
+            $password1 = trim($request->get('password1'));
+            $password2 = trim($request->get('password2'));
+            if (empty($password1) || empty($password2) || $password1 !== $password2) {
+                return new JsonResponse(array(
+                    'success' => false,
+                    'message' => 'Wrong password',
+                    'cause' => 'The passwords were not defined correctly',
+                ));
+            }
+            $password = $this->get('security.password_encoder')->encodePassword($user, $password1);
+            $user->setPassword($password);
+            $user->setAccessToken(null);
 
-    public function createAndLoginUserAction(Request $request) {
+            $em->flush();
+
+            // Log in the new user
+            $token = new UsernamePasswordToken($user, $user->getPassword(), "main", $user->getRoles());
+            $this->get("security.token_storage")->setToken($token);
+            $event = new InteractiveLoginEvent($request, $token);
+            $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
+
+            return new JsonResponse(array(
+                'success' => true,
+                'message' => 'The new user has been created',
+                'redirect' => $this->generateUrl('admin_home')
+            ));
+        } catch (\Exception $ex) {
+            return new JsonResponse(array(
+                'success' => false,
+                'message' => 'An unexpected error has accured.',
+                'cause' => $ex->getMessage()
+            ));
+        }
+    }
+
+    public function createAndLoginAction(Request $request) {
         try {
             $em = $this->getDoctrine()->getManager();
             $pre_id = $request->get('pre');

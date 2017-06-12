@@ -12,27 +12,27 @@
                     </tr>
                     <tr>
                         <td class="content-block">
-                            <h3>RealBoost&trade; register request</h3>
+                            <h3>RealBoost&trade; password reset request</h3>
                         </td>
                     </tr>
                     <tr>
                         <td class="content-block">
-                            Dear <span>{{ pre.firstname }} {{ pre.lastname }}</span>, it is a pleasure welcome you to our service.
+                            Dear <span>{{ user.firstname }} {{ user.lastname }}</span>, we have received your request for password reset.
                         </td>
                     </tr>
                     <tr>
                         <td class="content-block">
-                            To continue with your request and get your credentials, please confirm using the following link:
+                            To proceed with your credentials reset, please use the following link:
                         </td>
                     </tr>
                     <tr>
                         <td class="content-block aligncenter" itemprop="handler" itemscope itemtype="http://schema.org/HttpActionHandler">
-                            <a href="{{ url('admin_confirmation', {'token':pre.urltoken}) }}" class="btn-primary" itemprop="url">Confirm email address</a>
+                            <a href="{{ url('admin_resetpassword_form', {'token':user.accesstoken}) }}" class="btn-primary" itemprop="url">Reset Password</a>
                         </td>
                     </tr>
                     <tr>
                         <td class="content-block">
-                            For security reasons, this link will be available just for <span class="red">72 hours</span>
+                            For security reasons, this access will be available just for <span class="red">72 hours</span>
                         </td>
                     </tr>
                     <tr>

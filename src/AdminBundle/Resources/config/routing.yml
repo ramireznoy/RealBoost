@@ -24,9 +24,15 @@ admin_confirmation:
 admin_checkavailability:
     path:     /checkavailability
     defaults: { _controller: AdminBundle:Admin:checkAvailability }
+admin_resetpassword_form:
+    path:     /resetpassword/{token}
+    defaults: { _controller: AdminBundle:Views:resetPassword }
+admin_resetandlogin:
+    path:     /resetandlogin
+    defaults: { _controller: AdminBundle:Admin:resetAndLogin }
 admin_createandloginuser:
     path:     /createandlogin
-    defaults: { _controller: AdminBundle:Admin:createAndLoginUser }
+    defaults: { _controller: AdminBundle:Admin:createAndLogin }
 
 admin_createuser_view_test:
     path:     /bd/user

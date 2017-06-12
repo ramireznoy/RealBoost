@@ -30,7 +30,7 @@
                         </a>
                     </div>
                     <div class="navbar-content clearfix">
-                        <div class="text-bold" style="padding: .5em 1em;font-size: 1.2em;">Complete your registration as {{ pre.firstname }} {{ pre.lastname }}</div>
+                        <div class="text-bold" style="padding: .5em 1em;font-size: 1.2em;">Complete password reset for {{ user.firstname }} {{ user.lastname }}</div>
                     </div>
                 </div>
             </header>
@@ -42,42 +42,23 @@
                             <div class="col-sm-6 col-sm-offset-3">
                                 <div class="panel">
                                     <div class="panel-heading">
-                                        <h3 class="panel-title">Almost ready...</h3>
+                                        <h3 class="panel-title">Set your new password</h3>
                                     </div>
                                     <form class="panel-body form-horizontal form-padding">
-
                                         <div class="form-group">
-                                            <div class="col-md-12"><p class="form-control-static text-info text-center">Please, complete the following information to access your account</p></div>
+                                            <div class="col-md-12"><p class="form-control-static text-info text-center">Please, set the new password to access your account</p></div>
                                         </div>
-
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label" for="plaque">Plaque</label>
-                                            <div class="col-md-9">
-                                                <input id="plaque" name="plaque" class="form-control" placeholder="Your plaque ID" type="text">
-                                                <small class="help-block">A unique system-wide ID. It is a personal tag to provide web access for your clients and yourself</small>
-                                            </div>
-                                        </div>
-
                                         <div class="form-group">
                                             <label class="col-md-3 control-label" for="password1">Password</label>
                                             <div class="col-md-9">
                                                 <input id="password1" name="password1" class="form-control" placeholder="Password" type="password">
-                                                <small class="help-block">Your access password</small>
+                                                <small class="help-block">Your new access password</small>
                                             </div>
                                         </div>
-
                                         <div class="form-group">
                                             <div class="col-md-9 col-md-offset-3">
                                                 <input id="password2" name="password2" class="form-control" placeholder="Password again" type="password">
-                                                <small class="help-block">Please, repeat the access password</small>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label" for="phone">Phone</label>
-                                            <div class="col-md-9">
-                                                <input id="phone" name="phone" class="form-control" placeholder="Your phone number" type="text">
-                                                <small class="help-block">Should be your personal number to facilitate contact and improve security</small>
+                                                <small class="help-block">Please, repeat the new access password</small>
                                             </div>
                                         </div>
                                     </form>
@@ -100,46 +81,12 @@
         <script src="{{ asset('assets/js/jquery.mask.js') }}"></script>
         <script>
             $(document).ready(function () {
-                $('#plaque, #password1, #password2, #phone').focus(function () {
+                $('#password1, #password2').focus(function () {
                     $(this).removeClass('error-marker');
                     $(this).parent('div').removeClass('has-error');
                 });
-                $('#plaque').mask('A', {
-                    translation: {
-                        'A': {pattern: /[a-z0-9_-]/, recursive: true}
-                    }
-                });
-                $('#phone').mask('(+1) 000-000-0000');
-                $('#plaque').on('blur', function () {
-                    $.ajax({
-                        url: '{{ path('admin_checkavailability') }}',
-                        method: 'post',
-                        data: {
-                            'username': $('#plaque').val()
-                        },
-                        success: function (resp) {
-                            if (resp.success) {
-                                if (!resp.available) {
-                                    $('#plaque').addClass('error-marker');
-                                    $('#plaque').parent('div').addClass('has-error');
-                                    $.niftyNoty({
-                                        type: 'danger',
-                                        message: 'Sorry, your plaque ID is already taken. Please, select a new one',
-                                        container: 'floating',
-                                        timer: 5000
-                                    });
-                                }
-                            }
-                        }
-                    });
-                });
                 $('#send').on('click', function () {
                     var error = false;
-                    if ($('#plaque').val() === '') {
-                        $('#plaque').addClass('error-marker');
-                        $('#plaque').parent('div').addClass('has-error');
-                        error = true;
-                    }
                     if ($('#password1').val() === '') {
                         $('#password1').addClass('error-marker');
                         $('#password1').parent('div').addClass('has-error');
@@ -150,19 +97,10 @@
                         $('#password2').parent('div').addClass('has-error');
                         error = true;
                     }
-                    if ($('#phone').val() === '') {
-                        $('#phone').addClass('error-marker');
-                        $('#phone').parent('div').addClass('has-error');
-                        error = true;
-                    } else if ($('#phone').val().length < 17) {
-                        $('#phone').addClass('error-marker');
-                        $('#phone').parent('div').addClass('has-error');
-                        error = true;
-                    }
                     if (error) {
                         $.niftyNoty({
                             type: 'danger',
-                            message: 'Please, complete the marked fields',
+                            message: 'Please, set your new password',
                             container: 'floating',
                             timer: 5000
                         });
@@ -180,14 +118,13 @@
                     } else {
                         $('#send').html('<span class="fa fa-spin fa-spinner"></span> Sign in <i class="ion-ios-arrow-right"></i>');
                         $.ajax({
-                            url: '{{ path('admin_createandloginuser') }}',
+                            url: '{{ path('admin_resetandlogin') }}',
                             method: 'post',
                             data: {
-                                'plaque': $('#plaque').val(),
                                 'password1': $('#password1').val(),
                                 'password2': $('#password2').val(),
-                                'phone': $('#phone').val(),
-                                'pre': '{{ pre.id }}'
+                                'token' : '{{ user.accesstoken }}',
+                                'user': '{{ user.id }}'
                             },
                             success: function (resp) {
                                 if (resp.success) {

@@ -20,7 +20,7 @@ class ViewsController extends Controller {
             return $this->render('AdminBundle:Admin:index.html.twig', array('resp' => '>>>> fallo <<<< ' . $ex->getMessage()));
         }
     }
-    
+
     public function loginFormAction() {
         if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             $authenticationUtils = $this->get('security.authentication_utils');
@@ -30,7 +30,7 @@ class ViewsController extends Controller {
             return $this->redirectToRoute('admin_home');
         }
     }
-    
+
     public function registerFormAction() {
         if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             $authenticationUtils = $this->get('security.authentication_utils');
@@ -40,7 +40,7 @@ class ViewsController extends Controller {
             return $this->redirectToRoute('admin_home');
         }
     }
-    
+
     public function recoverFormAction() {
         if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             $authenticationUtils = $this->get('security.authentication_utils');
@@ -50,7 +50,19 @@ class ViewsController extends Controller {
             return $this->redirectToRoute('admin_home');
         }
     }
-    
+
+    public function resetPasswordAction($token, Request $request) {
+        // For the moment, there is no real time limit check like registration process. It will need a new column but I am lazy... ;-)
+        $em = $this->getDoctrine()->getManager();
+        $users = $em->getRepository('AdminBundle\Entity\SystemUser')->findBy(array('accesstoken' => $token));
+        if (count($users) > 0) {
+            $user = $users[0];
+            return $this->render('AdminBundle:Admin:Login/complete_reset.html.twig', array('user' => $user));
+        } else {
+            return $this->redirectToRoute('admin_home');
+        }
+    }
+
     public function mailConfirmationAction($token, Request $request) {
         $em = $this->getDoctrine()->getManager();
         $_pre = $em->getRepository('AdminBundle\Entity\RegisterRequest')->findBy(array('urltoken' => $token));
@@ -68,7 +80,7 @@ class ViewsController extends Controller {
         }
         return $this->render('AdminBundle:Admin:Login/nopage.html.twig');
     }
-    
+
     public function userAction() {
         return $this->render('AdminBundle:Admin/BackDoor:user.html.twig');
     }
@@ -301,7 +313,7 @@ class ViewsController extends Controller {
             return $this->render('AdminBundle:Admin:error.html.twig', array('cause' => $ex->getMessage()));
         }
     }
-    
+
     public function merchandisesAction() {
         $em = $this->getDoctrine()->getManager();
         $merchandises = $em->getRepository('CoreBundle\Entity\Merchandise')->findAll();
@@ -321,7 +333,7 @@ class ViewsController extends Controller {
             $_u[] = $s->getService()->getName();
             $_u[] = $s->getCartype()->getName();
             $_u[] = HTMLDataView::moneyType($s->getPrice(), $s->getCurrency());
-            $_u[] = HTMLDataView::booleanType($s->isEnabled());            
+            $_u[] = HTMLDataView::booleanType($s->isEnabled());
             $_u['id'] = $s->getId();
             $rows[] = $_u;
         }

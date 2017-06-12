@@ -1,3 +1,6 @@
+#
+# Access and Login control
+#
 admin_home:
     path:     /
     defaults: { _controller: AdminBundle:Views:index }
@@ -57,89 +60,8 @@ admin_deleteuser:
     defaults: { _controller: AdminBundle:Admin:deleteUser }
 
 #
-# Groups administration
+# Test
 #
-admin_manage_services:
-    path:     /manageservices
-    defaults: { _controller: AdminBundle:Views:services }
-admin_createservice_form:
-    path:     /createservice_form
-    defaults: { _controller: AdminBundle:Views:serviceForm }
-admin_createservice:
-    path:     /createservice
-    defaults: { _controller: AdminBundle:Admin:createService }
-admin_editservice_form:
-    path:     /editservice_form
-    defaults: { _controller: AdminBundle:Views:serviceForm }
-admin_editservice:
-    path:     /editservice
-    defaults: { _controller: AdminBundle:Admin:editService }
-admin_deleteservice:
-    path:     /deleteservice
-    defaults: { _controller: AdminBundle:Admin:deleteService }
-
-#
-# Categories administration
-#
-admin_manage_categories:
-    path:     /managecategories
-    defaults: { _controller: AdminBundle:Views:categories }
-admin_createcategory_form:
-    path:     /createcategory_form
-    defaults: { _controller: AdminBundle:Views:categoryForm }
-admin_createcategory:
-    path:     /createcategory
-    defaults: { _controller: AdminBundle:Admin:createCategory }
-admin_editcategory_form:
-    path:     /editcategory_form
-    defaults: { _controller: AdminBundle:Views:categoryForm }
-admin_editcategory:
-    path:     /editcategory
-    defaults: { _controller: AdminBundle:Admin:editCategory }
-admin_deletecategory:
-    path:     /deletecategory
-    defaults: { _controller: AdminBundle:Admin:deleteCategory }
-
-#
-# Car merchandises administration
-#
-admin_manage_models:
-    path:     /managemodels
-    defaults: { _controller: AdminBundle:Views:models }
-admin_createmodel_form:
-    path:     /createmodel_form
-    defaults: { _controller: AdminBundle:Views:modelForm }
-admin_createmodel:
-    path:     /createmodel
-    defaults: { _controller: AdminBundle:Admin:createModel }
-admin_editmodel_form:
-    path:     /editmodel_form
-    defaults: { _controller: AdminBundle:Views:modelForm }
-admin_editmodel:
-    path:     /editmodel
-    defaults: { _controller: AdminBundle:Admin:editModel }
-admin_deletemodel:
-    path:     /deletemodel
-    defaults: { _controller: AdminBundle:Admin:deleteModel }
-
-#
-# Merchandises administration
-#
-admin_manage_merchandises:
-    path:     /managemerchandises
-    defaults: { _controller: AdminBundle:Views:merchandises }
-admin_createmerchandise_form:
-    path:     /createmerchandise_form
-    defaults: { _controller: AdminBundle:Views:merchandiseForm }
-admin_createmerchandise:
-    path:     /createmerchandise
-    defaults: { _controller: AdminBundle:Admin:editMerchandise }
-admin_editmerchandise_form:
-    path:     /editmerchandise_form
-    defaults: { _controller: AdminBundle:Views:merchandiseForm }
-admin_editmerchandise:
-    path:     /editmerchandise
-    defaults: { _controller: AdminBundle:Admin:editMerchandise }
-admin_deletemerchandise:
-    path:     /deletemerchandise
-    defaults: { _controller: AdminBundle:Admin:deleteMerchandise }
+admin_test_template:
+    path:     /testtemplate
+    defaults: { _controller: AdminBundle:Views:testTemplate }

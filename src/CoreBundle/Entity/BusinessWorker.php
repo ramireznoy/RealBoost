@@ -11,7 +11,7 @@ use AdminBundle\Entity\State;
  * BusinessWorker
  *
  * @ORM\Table(name="core_businessworkers")
- * @ORM\Entity(repositoryClass="CoreBundle\Repository\ClientRepository")
+ * @ORM\Entity(repositoryClass="CoreBundle\Repository\BusinessWorkerRepository")
  */
 class BusinessWorker extends SystemUser {
 
@@ -71,13 +71,24 @@ class BusinessWorker extends SystemUser {
      * @ORM\Column(name="business_zip", type="string", length=10, nullable=true)
      */
     private $business_zip;
+    
+    /**
+     * Every user will can use many templates.
+     * 
+     * @ORM\ManyToMany(targetEntity="CardTemplate", cascade={"persist", "remove"})
+     * @ORM\JoinTable(name="relation_businessworker_template",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="cascade")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="template_id", referencedColumnName="id", onDelete="cascade")}
+     *      )
+     */
+    private $templates;
 
     /**
      * Constructor for BusinessWorker
      */
     public function __construct() {
         parent::__construct();
-        $this->services = new ArrayCollection();
+        $this->templates = new ArrayCollection();
     }
     
     /**
@@ -244,5 +255,34 @@ class BusinessWorker extends SystemUser {
      */
     public function getBusinessZip() {
         return $this->business_zip;
+    }
+    
+    /**
+     * Get templates
+     * 
+     * @return \Doctrine\Common\Collections\Collection|CardTemplate[]
+     */
+    public function getTemplates() {
+        return $this->templates;
+    }
+
+    /**
+     * @param CardTemplate $template
+     */
+    public function addUser(CardTemplate $template) {
+        if ($this->templates->contains($template)) {
+            return;
+        }
+        $this->templates->add($template);
+    }
+
+    /**
+     * @param CardTemplate $template
+     */
+    public function removeUser(CardTemplate $template) {
+        if (!$this->templates->contains($template)) {
+            return;
+        }
+        $this->templates->removeElement($template);
     }
 }

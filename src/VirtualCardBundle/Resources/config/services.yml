@@ -1,0 +1,4 @@
+services:
+#    virtual_card.example:
+#        class: VirtualCardBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

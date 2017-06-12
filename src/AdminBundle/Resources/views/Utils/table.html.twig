@@ -173,7 +173,7 @@
                         data: {id: ids[0]},
                         success: function (resp) {
                             $('#modal-body').html(resp);
-                            $('#modal-title').html('<i class="{{ model.icon }} font-blue"></i><span class="caption-subject uppercase font-blue"> Modificar registro</span>');
+                            $('#modal-title').html('<i class="{{ model.icon }} font-blue"></i><span class="caption-subject uppercase font-blue"> Modify entry</span>');
                             var form = $('.modal-body').find('form');
                             $(form).attr('action', '{{ path(model.editpath) }}');
                             $('#form-cancel').on('click', cancelAction);
@@ -185,7 +185,7 @@
                             unblockUI();
                             $.niftyNoty({
                                 type: 'danger',
-                                message : 'No se pudo crear la interfaz. Ocurrió un error en la red',
+                                message : 'Was not possible to create the interface. A network error occurred',
                                 container : 'floating',
                                 timer : 5000
                             });
@@ -194,7 +194,7 @@
                 } else {
                     $.niftyNoty({
                         type: 'danger',
-                        message : 'Debe seleccionar una entrada de la tabla',
+                        message : 'You must select one table entry',
                         container : 'floating',
                         timer : 5000
                     });
@@ -236,19 +236,19 @@
             function newAction() {
                 $('#form-submit').html('<span class="fa fa-spin fa-spinner"></span> Enviando...');
                 var form = $('.modal-body').find('form');
-                ajaxsubmit(form[0], updateNew, errorNew);
+                ajaxsubmit(form[0], updateNew, null, errorNew);
             }
 
             function editAction() {
                 $('#form-submit').html('<span class="fa fa-spin fa-spinner"></span> Enviando...');
                 var form = $('.modal-body').find('form');
-                ajaxsubmit(form[0], updateNew, errorNew);
+                ajaxsubmit(form[0], updateNew, null, errorNew);
             }
 
             function deleteAction() {
                 $('#form-submit').html('<span class="fa fa-spin fa-spinner"></span> Enviando...');
                 var form = $('.modal-body').find('form');
-                ajaxsubmit(form[0], updateDelete, errorNew);
+                ajaxsubmit(form[0], updateDelete, null, errorNew);
             }
 
             function cancelAction() {
@@ -265,7 +265,7 @@
                 $('#form-submit').html('Proceder');
                 $('#modal').scrollTop(0);
                 $('#modal-alert').removeClass('hidden');
-                $('#modal-alert').html('<div>' + resp.message + '</div><div>' + resp.cause + '</div>');                
+                $('#modal-alert').html(resp);                
             }
 
             function updateDelete() {

@@ -1,0 +1,6 @@
+virtual_card_public_redirect:
+    path:     /
+    defaults: { _controller: VirtualCardBundle:CardView:publicRedirect }
+virtual_card_access:
+    path:     /{plaque}
+    defaults: { _controller: VirtualCardBundle:CardView:index }

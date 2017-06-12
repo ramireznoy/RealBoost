@@ -6,6 +6,11 @@ app_admin:
     resource: "@AdminBundle/Resources/config/routing.yml"
     prefix:   /
 
+app_card:
+    resource: "@VirtualCardBundle/Resources/config/routing.yml"
+    prefix:   /card
+
 app:
     resource: "@FrontendBundle/Resources/config/routing.yml"
-    prefix:   /realtors
+    prefix:   /home
+    

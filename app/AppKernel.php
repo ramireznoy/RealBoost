@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new AdminBundle\AdminBundle(),
             new CoreBundle\CoreBundle(),
             new CalendarBundle\CalendarBundle(),
+            new VirtualCardBundle\VirtualCardBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

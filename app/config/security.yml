@@ -58,5 +58,7 @@ security:
         - { path: ^/resetpassword, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         - { path: ^/resetandlogin, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         - { path: ^/createandlogin, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        - { path: ^/card, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        # Temporary, must be switched with the backend access
+        - { path: ^/home, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: [IS_AUTHENTICATED_FULLY,IS_AUTHENTICATED_REMEMBERED], requires_channel: https }
-        - { path: ^/realtors, roles: IS_AUTHENTICATED_ANONYMOUSLY }

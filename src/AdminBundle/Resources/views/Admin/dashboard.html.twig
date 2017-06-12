@@ -5,4 +5,5 @@
 <p>Correo: {{ user.email }}</p>
 <p>Teléfono: {{ user.phone }}</p>
 <p>Roles: {% for role in user.roles %}{{ role }}, {% endfor %}</p>
+<a class="btn btn-bg btn-info" href="{{ path('admin_test_template') }}"> Test dynamic template call </a>
 {% endblock %}

@@ -14,7 +14,6 @@ security:
         user_provider:
             entity:
                 class: AdminBundle:SystemUser
-                property: username
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs

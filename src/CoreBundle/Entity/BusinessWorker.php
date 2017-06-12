@@ -43,14 +43,6 @@ class BusinessWorker extends SystemUser {
      * @ORM\Column(name="zip", type="string", length=10, nullable=true)
      */
     private $zip;
-    
-    /**
-     * @var \Doctrine\Common\Collections\Collection|Service[]
-     * 
-     * @ORM\OneToMany(targetEntity="Service", mappedBy="worker") 
-     */
-    private $services;
-
 
     /**
      * Constructor for BusinessWorker
@@ -144,14 +136,5 @@ class BusinessWorker extends SystemUser {
      */
     public function getZip() {
         return $this->zip;
-    }
-
-    /**
-     * Get services
-     * 
-     * @return \Doctrine\Common\Collections\Collection|Service[]
-     */
-    public function getServices() {
-        return $this->services;
     }
 }

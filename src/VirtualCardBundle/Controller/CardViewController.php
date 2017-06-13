@@ -22,16 +22,10 @@ class CardViewController extends Controller
                 return $this->redirectToRoute('frontend_home');
             }
             $user = $users[0];
-            return $this->render('VirtualCardBundle:Cards:test.html.twig', array('user' => $user));            
+            return $this->render('VirtualCardBundle:Cards:Empathy/index.html.twig', array('user' => $user));            
         } catch(\Exception $ex) {
+            echo $ex->getMessage();die();
             return $this->redirectToRoute('frontend_home');
-        }
-        
-        
-        if ($plaque !== 'test') {
-            return $this->redirectToRoute('admin_home');
-        } else {
-            
         }
     }
 }

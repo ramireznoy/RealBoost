@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en-US" class="no-js one-page-layout" data-classic-layout="false" data-mobile-classic-layout="false" data-prev-animation="16" data-next-animation="15" data-random-animation="false">
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+        <title>Empathy | Responsive WordPress Theme</title>
+
+        <link rel="stylesheet" id="nprogress-css" href="{{ asset('assets/virtualcards/empathy/js/nprogress/nprogress.css') }}" type="text/css" media="all" />
+        {#<link rel="stylesheet" id="montserrat-css" href="http://fonts.googleapis.com/css?family=Montserrat:400,700&amp;subset=latin') }}" type="text/css" media="all" />
+        <link rel="stylesheet" id="roboto-css" href="http://fonts.googleapis.com/css?family=Roboto:400,400italic,700,700italic&amp;subset=latin') }}" type="text/css" media="all" />#}
+        <link rel="stylesheet" id="bootstrap-css" href="{{ asset('assets/virtualcards/empathy/css/bootstrap.min.css') }}" type="text/css" media="all" />
+        <link rel="stylesheet" id="pe-icon-7-stroke-css" href="{{ asset('assets/virtualcards/empathy/css/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css') }}" type="text/css" media="all" />
+        <link rel="stylesheet" id="fontello-css" href="{{ asset('assets/virtualcards/empathy/css/fonts/fontello/css/fontello.css') }}" type="text/css" media="all" />
+        <link rel="stylesheet" id="uniform-css" href="{{ asset('assets/virtualcards/empathy/js/jquery.uniform/uniform.default.css') }}" type="text/css" media="all" />
+        <link rel="stylesheet" id="animations-css" href="{{ asset('assets/virtualcards/empathy/css/animations.css') }}" type="text/css" media="all" />
+        <link rel="stylesheet" id="empathy-main-css" href="{{ asset('assets/virtualcards/empathy/css/main.css') }}" type="text/css" media="all" />
+        <link rel="stylesheet" id="empathy-768-css" href="{{ asset('assets/virtualcards/empathy/css/768.css') }}" type="text/css" media="all" />
+        <link rel="stylesheet" id="empathy-style-css" href="{{ asset('assets/virtualcards/empathy/style.css') }}" type="text/css" media="all" />
+        <script type="text/javascript" src="{{ asset('assets/virtualcards/empathy/js/jquery/jqueryb8ff.js?ver=1.12.4') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/virtualcards/empathy/js/jquery/jquery-migrate.min330a.js?ver=1.4.1') }}"></script>
+
+        <!-- Text Logo Background Color -->
+        <style type="text/css">
+            @media screen and (min-width: 768px) {
+                .site-title {
+                    background: #2ba163;
+                }
+            }
+        </style>
+
+        <!-- Link Color -->
+        <style type="text/css">
+            a {
+                color: #009966;
+            }
+        </style>
+
+        <!-- Link Hover Color -->
+        <style type="text/css">
+            a:hover {
+                color: #8acb82;
+            }
+        </style>
+
+        <!-- Primary Color -->
+        <style type="text/css">
+            input[type=submit]:hover,
+            input[type=button]:hover,
+            button:hover,
+            a.button:hover,
+            .event h3,
+            .event h2+p i,
+            .event h2+p img,
+            #search-submit,
+            .entry-meta .cat-links a,
+            .pagination a:hover,
+            .navigation a:hover,
+            a.more-link:hover,
+            .section-title h2 i,
+            .event:nth-of-type(2):after {
+                background-color: #8acb82;
+            }
+
+            .bypostauthor>article {
+                border-color: #8acb82;
+            }
+
+            .event h3:before {
+                border-color: #8acb82;
+            }
+        </style>
+
+        <script>
+            jQuery(document).ready(function ($) {
+                $('.one-page-layout .site-main > section:nth-of-type(1)').toggleClass('light-text');
+            });
+        </script>
+
+        <link rel="icon" href="wp-content/uploads/2015/06/cropped-home-1-32x32.jpg" sizes="32x32" />
+        <link rel="icon" href="wp-content/uploads/2015/06/cropped-home-1-192x192.jpg" sizes="192x192" />
+        <link rel="apple-touch-icon-precomposed" href="wp-content/uploads/2015/06/cropped-home-1-180x180.jpg" />
+        <meta name="msapplication-TileImage" content="http://themes.pixelwars.org/empathy/demo/wp-content/uploads/2015/06/cropped-home-1-270x270.jpg" />
+    </head>
+
+    <body class="home page-template page-template-template-homepage page-template-template-homepage-php page">
+        <div id="page" class="hfeed site">
+            <header id="masthead" class="header" role="banner">
+                <a class="menu-toggle toggle-link"></a>
+                <h1 class="site-title mobile-title">{{ user.fullname }}</h1>
+                <div class="header-wrap">
+                    <img alt="Empathy" src="{{ asset('assets/virtualcards/empathy/images/avatar.jpg') }}">
+                    <h1 class="site-title">{{ user.fullname }}</h1>
+                    <nav id="primary-navigation" class="site-navigation primary-navigation" role="navigation">
+                        <div class="nav-menu">
+                            <ul class="menu-auto">
+                            </ul>
+                            <script>
+                                jQuery(document).ready(function ($) {
+                                    var menu_html = "";
+                                    $('#main').find('section').each(function () {
+                                        var id = $(this).attr('id');
+                                        var icon = $(this).find('.page-title  i').attr('class');
+                                        var title = $(this).find('.page-title').text();
+                                        var menu_item = '<li><a href="#/' + id + '"><i class="' + icon + '"></i>' + title + '</a></li>';
+                                        menu_html += menu_item;
+                                        $('.menu-auto').html(menu_html);
+                                    });
+                                });
+                            </script>
+                        </div>
+                    </nav>
+
+                    <div class="header-bottom">
+                        <div class="copy-text">
+                            <div id="text-2" class="widget_text">
+                                <div class="textwidget">
+                                    <p>© 2017 RealBoost</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <div id="main" class="site-main">
+                <section id="home" class="pt-page page-layout home-section has-bg-img" style="background-image: url({{ asset('assets/virtualcards/empathy/background/home-2.jpg') }});">
+                    <div class="content">
+                        <div class="layout-medium">
+                            <h1 class="page-title" style="display: none;">
+                                <i class="pe-7s-home"></i> home </h1>
+                            <h4>Hi, I am</h4>
+                            <h2>{{ user.fullname }}</h2>
+                            <h4>I am <strong id="typist-element" data-typist="an accountant.,a real estate agent.">a realtor.</strong></h4>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="about-me" class="pt-page page-layout ">
+                    <div class="content">
+                        <div class="layout-medium">
+                            <h1 class="page-title">
+                                <i class="pe-7s-user"></i> about me </h1>
+                            <div class="section-title center">
+                                <h2><i>Character and experience</i></h2>
+                            </div>
+                            <div class="row">
+                                {#<div class="col-sm-6 col-md-3">
+                                    <div class="service">
+                                        <h4>{{ template.about.title1 }}</h4>
+                                        <p>{{ template.about.content1 }}</p>
+                                    </div>
+                                </div>#}
+                            </div>
+                            <div class="section-title center">
+                                <h2><i>A little more...</i></h2>
+                            </div>
+                            {#<p class="center">
+                                <a class="button " href="#">{{ template.about.more1 }}</a>
+                            </p>#}
+                        </div>
+                    </div>
+                </section>
+                <section id="resume" class="pt-page page-layout ">
+                    <div class="content">
+                        <div class="layout-medium">
+                            <h1 class="page-title">
+                                <i class="pe-7s-share"></i> share </h1>
+                            <div class="section-title center">
+                                <h2><i>Share my card</i></h2>
+                            </div>
+                            <div class="contact-form">
+                                <form id="share-form" method="post" action="">
+                                    <p><label for="name">INVITE PHONE</label><input type="text" id="phone" name="phone" class="required phone"></p>
+                                    <p><label for="email">INVITE EMAIL</label><input type="text" id="email" name="email" class="required email"></p>
+                                    <p><label for="name">INVITE NAME</label><input type="text" id="name" name="name" class="required"></p>
+                                    <p class="antispam"><label for="url">Leave this empty</label><input type="text" id="url" name="url"></p>
+                                    <p><input type="submit" class="submitshare button primary" value="SEND"></p>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+                <section id="contact" class="pt-page page-layout ">
+                    <div class="content">
+                        <div class="layout-medium">
+                            <h1 class="page-title">
+                                <i class="pe-7s-call"></i> contact </h1>
+                            <div class="section-title center">
+                                <h2><i>I am in</i></h2>
+                            </div>
+                            <ul class="social">
+                                <li>
+                                    <a target="_blank" class="facebook" href="#"></a>
+                                </li>
+                                <li>
+                                    <a target="_blank" class="twitter" href="#"></a>
+                                </li>
+                                <li>
+                                    <a target="_blank" class="linkedin" href="#"></a>
+                                </li>
+                                <li>
+                                    <a target="_blank" class="google-plus" href="#"></a>
+                                </li>
+                            </ul>
+                            <div class="section-title center">
+                                <h2><i>Reach me also by</i></h2>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <div class="fun-fact">
+                                        <p><i class="pe-7s-call"></i></p>
+                                        <h4>{{ user.phone }}</h4>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <div class="fun-fact">
+                                        <p><i class="pe-7s-mail"></i></p>
+                                        <h4>{{ user.email }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section-title center">
+                                <h2><i>Drop Me A Line</i></h2>
+                            </div>
+                            <div class="contact-form">
+                                <form id="contact-form" method="post" action="">
+                                    <p><label for="name">YOUR NAME</label><input type="text" id="name" name="name" class="required"></p>
+                                    <p><label for="email">EMAIL TO CONTACT YOU BACK</label><input type="text" id="email" name="email" class="required email"></p>
+                                    <p class="antispam"><label for="url">Leave this empty</label><input type="text" id="url" name="url"></p>
+                                    <p><label for="message">MESSAGE FOR ME</label><textarea id="message" name="message" class="required"></textarea></p>
+                                    <p style="padding: 0px; margin: 0px;"><input type="hidden" id="subject" name="subject" value="Contact form message from Empathy"></p>
+                                    <p><input type="submit" class="submitmail button primary" value="SEND"></p>
+                                </form>
+                            </div>
+                            <!--<div class="map">
+                                <p style="padding: 0px; margin: 0px;">
+                                    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js') }}"></script>
+                                </p>
+                                <div id="map-canvas" class="map-canvas" data-latitude="-25.363882" data-longitude="131.044922" data-zoom="5" data-marker-image="http://themes.pixelwars.org/empathy/demo/wp-content/uploads/2015/07/marker.png"></div>
+                        </div>-->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="site-alert animated"></div>
+
+        <script type="text/javascript" src="{{ asset('assets/virtualcards/empathy/js/modernizr.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/virtualcards/empathy/js/jquery.address-1.5.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/virtualcards/empathy/js/nprogress/nprogress.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/virtualcards/empathy/js/fastclick.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/virtualcards/empathy/js/typist.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/virtualcards/empathy/js/imagesloaded.min55a0.js?ver=3.2.0') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/virtualcards/empathy/js/jquery.isotope.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/virtualcards/empathy/js/jquery.fitvids.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/virtualcards/empathy/js/jquery.validate.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/virtualcards/empathy/js/jquery.uniform/jquery.uniform.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/virtualcards/empathy/js/jquery.magnific-popup/jquery.magnific-popup.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/virtualcards/empathy/js/socialstream.jquery.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/virtualcards/empathy/js/jarallax.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/virtualcards/empathy/js/jarallax-video.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/virtualcards/empathy/js/main.js') }}"></script>
+
+    </body>
+
+</html>

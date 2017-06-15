@@ -51,12 +51,20 @@ class CardTemplate {
     private $users;
     
     /**
+     * @var \Doctrine\Common\Collections\Collection|Agency[]
+     *
+     * @ORM\ManyToMany(targetEntity="Agency", mappedBy="templates")
+     */
+    private $agencies;
+    
+    
+    /**
      * Constructor for CardTemplate
      */
     public function __construct() {
         $this->users = new ArrayCollection();
-    }
-    
+        $this->agencies = new ArrayCollection();
+    }    
 
     /**
      * Get id
@@ -133,9 +141,20 @@ class CardTemplate {
     }
     
     /**
+     * Get users using the template
+     * 
      * @return \Doctrine\Common\Collections\Collection|SystemWorker[]
      */
     public function getUsers() {
         return $this->users;
+    }
+    
+    /**
+     * Get agencies using the template
+     * 
+     * @return \Doctrine\Common\Collections\Collection|Agency[]
+     */
+    public function getAgencies() {
+        return $this->agencies;
     }
 }

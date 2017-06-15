@@ -1,9 +1,79 @@
 {% extends 'AdminBundle:Admin:content_base.html.twig' %}
-{% block content_title %}Panel{% endblock %}
-{% block content %}
-<p>Autenticado como: {{ user.fullname }} ({{ user.username }})</p>
-<p>Correo: {{ user.email }}</p>
-<p>Teléfono: {{ user.phone }}</p>
-<p>Roles: {% for role in user.roles %}{{ role }}, {% endfor %}</p>
-<a class="btn btn-bg btn-info" href="{{ path('admin_test_template') }}"> Test dynamic template call </a>
+{% block content_title %}
+    Your Cards
+    <div class="btn-group pull-right">
+        <button class="btn btn-success"><i class="demo-pli-plus icon-lg"></i></button>
+    </div>
+{% endblock %}
+{% block content_top_widget %}
+    <button class="btn btn-warning btn-icon btn-circle"><i class="demo-psi-star icon-lg"></i></button>
+    {% endblock %}
+    {% block content %}
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="panel panel-colorful panel-info">
+                <div class="panel-heading">
+                    <div class="panel-control">
+                        <div class="btn-group">
+                            <button class="dropdown-toggle btn" data-toggle="dropdown" aria-expanded="false"><i class="demo-pli-gear icon-lg"></i></button>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li><a href="#">Preview</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Edit</a></li>
+                                <li><a href="#">Delete</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <h3 class="panel-title">Network</h3>
+                </div>
+                <div class="panel-body text-center">
+                    <img alt="Avatar" class="img-lg img-circle img-border mar-btm" src="{{ asset('assets/img/profile-photos/10.png') }}">
+                    <p class="text-sm">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.</p>
+                    <ul class="list-unstyled text-center pad-top mar-no row">
+                        <li class="col-xs-6">
+                            <span class="text-lg text-semibold">134</span>
+                            <p class="text-sm mar-no">Contacts</p>
+                        </li>
+                        <li class="col-xs-6">
+                            <span class="text-lg text-semibold">65</span>
+                            <p class="text-sm mar-no">Actives</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="panel panel-colorful panel-info">
+                <div class="panel-heading">
+                    <div class="panel-control">
+                        <div class="btn-group">
+                            <button class="dropdown-toggle btn" data-toggle="dropdown" aria-expanded="false"><i class="demo-pli-gear icon-lg"></i></button>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li><a href="#">Preview</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Edit</a></li>
+                                <li><a href="#">Delete</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <h3 class="panel-title">Network</h3>
+                </div>
+                <div class="panel-body text-center">
+                    <img alt="Avatar" class="img-lg img-circle img-border mar-btm" src="{{ asset('assets/img/profile-photos/11.jpg') }}">
+                    <p class="text-sm">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.</p>
+                    <ul class="list-unstyled text-center pad-top mar-no row">
+                        <li class="col-xs-6">
+                            <span class="text-lg text-semibold">19</span>
+                            <p class="text-sm mar-no">Contacts</p>
+                        </li>
+                        <li class="col-xs-6">
+                            <span class="text-lg text-semibold">3</span>
+                            <p class="text-sm mar-no">Actives</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

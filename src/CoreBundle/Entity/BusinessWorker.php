@@ -16,72 +16,62 @@ use AdminBundle\Entity\State;
 class BusinessWorker extends SystemUser {
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="business_name", type="string", length=255, nullable=true)
-     */
-    private $business_name;
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="business_title", type="string", length=255, nullable=true)
-     */
-    private $business_title;
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="business_phone", type="string", length=20, nullable=true)
-     */
-    private $business_phone;
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="business_logo", type="string", nullable=true)
-     */
-    private $business_logo;
-    
-    /**
-     * @var \AdminBundle\Entity\State
+     * @var State
      * 
-     * @ORM\ManyToOne(targetEntity="\AdminBundle\Entity\State")
-     * @ORM\JoinColumn(name="business_state", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="AdminBundle\Entity\State")
+     * @ORM\JoinColumn(name="state", referencedColumnName="id")
      */
-    private $business_state;
+    private $state;
     
     /**
      * @var string
      *
-     * @ORM\Column(name="business_address", type="string", length=255, nullable=true)
+     * @ORM\Column(name="address", type="string", length=255, unique=true)
      */
-    private $business_address;
+    private $address;
     
     /**
      * @var string
      *
-     * @ORM\Column(name="business_city", type="string", length=50, nullable=true)
+     * @ORM\Column(name="city", type="string", length=50, nullable=false)
      */
-    private $business_city;
+    private $city;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="business_zip", type="string", length=10, nullable=true)
+     * @ORM\Column(name="zip", type="string", length=10)
      */
-    private $business_zip;
+    private $zip;
     
     /**
      * Every user will can use many templates.
      * 
      * @ORM\ManyToMany(targetEntity="CardTemplate", cascade={"persist", "remove"})
-     * @ORM\JoinTable(name="relation_businessworker_template",
+     * @ORM\JoinTable(name="relation_businessworker_templates",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="cascade")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="template_id", referencedColumnName="id", onDelete="cascade")}
      *      )
      */
     private $templates;
+    
+    /**
+     * @var \Doctrine\Common\Collections\Collection|Contact[]
+     *
+     * @ORM\ManyToMany(targetEntity="Contact", cascade={"persist", "remove"})
+     * @ORM\JoinTable(name="relation_businessworker_contacts",
+     *      joinColumns={@ORM\JoinColumn(name="businessworker_id", referencedColumnName="id", onDelete="cascade")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="contact_id", referencedColumnName="id", onDelete="cascade")}
+     *      )
+     */
+    private $contacts;
+    
+    /**
+     * @var \Doctrine\Common\Collections\Collection|Agency[]
+     *
+     * @ORM\ManyToMany(targetEntity="Agency", mappedBy="templates")
+     */
+    private $agencies;
 
     /**
      * Constructor for BusinessWorker
@@ -89,172 +79,94 @@ class BusinessWorker extends SystemUser {
     public function __construct() {
         parent::__construct();
         $this->templates = new ArrayCollection();
+        $this->contacts = new ArrayCollection();
+        $this->agencies = new ArrayCollection();
     }
     
     /**
-     * Get business name
+     * Get state
      * 
-     * @return string
+     * @return State
      */
-    public function getBusinessName() {
-        return $this->business_name;
-    }
-
-    /**
-     * Get business title or position
-     * 
-     * @return string
-     */
-    public function getBusinessTitle() {
-        return $this->business_title;
-    }
-
-    /**
-     * Get business phone
-     * 
-     * @return string
-     */
-    public function getBusinessPhone() {
-        return $this->business_phone;
-    }
-
-    /**
-     * Set business name
-     * 
-     * @param string $business_name
-     * @return BusinessWorker
-     */
-    public function setBusinessName($business_name) {
-        $this->business_name = $business_name;
-        return $this;
-    }
-
-    /**
-     * Set business title or position
-     * 
-     * @param string $business_title
-     * @return BusinessWorker
-     */
-    public function setBusinessTitle($business_title) {
-        $this->business_title = $business_title;
-        return $this;
-    }
-
-    /**
-     * Set business phone
-     * 
-     * @param string $business_phone
-     * @return BusinessWorker
-     */
-    public function setBusinessPhone($business_phone) {
-        $this->business_phone = $business_phone;
-        return $this;
+    public function getState() {
+        return $this->state;
     }
     
     /**
-     * Get business logo
+     * Set state
      * 
-     * @return string
+     * @param State $state
+     * @return Client
      */
-    public function getBusinessLogo() {
-        return $this->business_logo;
-    }
-
-    /**
-     * Set business logo
-     * 
-     * @param string $business_logo
-     * @return BusinessWorker
-     */
-    public function setBusinessLogo($business_logo) {
-        $this->business_logo = $business_logo;
-        return $this;
-    }
-            
-    /**
-     * Get business_state
-     * 
-     * @return \AdminBundle\Entity\State
-     */
-    public function getBusinessState() {
-        return $this->business_state;
-    }
-    
-    /**
-     * Set business_state
-     * 
-     * @param \AdminBundle\Entity\State $business_state
-     * @return BusinessWorker
-     */
-    public function setBusinessState(State $business_state) {
-        $this->business_state = $business_state;
+    public function setState(State $state) {
+        $this->state = $state;
         
         return $this;
     }
 
     /**
-     * Set business_address
+     * Set address
      *
-     * @param string $business_address
+     * @param string $address
      *
-     * @return BusinessWorker
+     * @return Client
      */
-    public function setBusinessAddress($business_address) {
-        $this->business_address = $business_address;
+    public function setAddress($address) {
+        $this->address = $address;
 
         return $this;
     }
 
     /**
-     * Get business_address
+     * Get address
      *
      * @return string
      */
-    public function getBusinessAddress() {
-        return $this->business_address;
+    public function getAddress() {
+        return $this->address;
     }
     
     /**
-     * Set business_city
+     * Set city
      * 
-     * @param srtring $business_city
-     * @return BusinessWorker
+     * @param srtring $city
+     * @return Client
      */
-    public function setBusinessCity($business_city) {
-        $this->business_city = $business_city;
+    public function setCity($city) {
+        $this->city = $city;
         
         return $this;
     }
     
     /**
-     * Get business_city
+     * Get city
      * 
      * @return string
      */
-    public function getBusinessCity() {
-        return $this->business_city;
+    public function getCity() {
+        return $this->city;
     }
 
     /**
-     * Set business_zip
+     * Set zip
      *
-     * @param string $business_zip
+     * @param string $zip
      *
-     * @return BusinessWorker
+     * @return Client
      */
-    public function setBusinessZip($business_zip) {
-        $this->business_zip = $business_zip;
+    public function setZip($zip) {
+        $this->zip = $zip;
 
         return $this;
     }
 
     /**
-     * Get business_zip
+     * Get zip
      *
      * @return string
      */
-    public function getBusinessZip() {
-        return $this->business_zip;
+    public function getZip() {
+        return $this->zip;
     }
     
     /**
@@ -262,14 +174,14 @@ class BusinessWorker extends SystemUser {
      * 
      * @return \Doctrine\Common\Collections\Collection|CardTemplate[]
      */
-    public function getTemplates() {
+    public function getCardTemplates() {
         return $this->templates;
     }
 
     /**
      * @param CardTemplate $template
      */
-    public function addUser(CardTemplate $template) {
+    public function addCardTemplate(CardTemplate $template) {
         if ($this->templates->contains($template)) {
             return;
         }
@@ -279,10 +191,48 @@ class BusinessWorker extends SystemUser {
     /**
      * @param CardTemplate $template
      */
-    public function removeUser(CardTemplate $template) {
+    public function removeCardTemplate(CardTemplate $template) {
         if (!$this->templates->contains($template)) {
             return;
         }
         $this->templates->removeElement($template);
+    }
+    
+    /**
+     * Get all contacts
+     * 
+     * @return \Doctrine\Common\Collections\Collection|Contact[]
+     */
+    public function getContacts() {
+        return $this->contacts;
+    }
+
+    /**
+     * @param Contact $contact
+     */
+    public function addContact(Contact $contact) {
+        if ($this->contacts->contains($contact)) {
+            return;
+        }
+        $this->contacts->add($contact);
+    }
+
+    /**
+     * @param Contact $contact
+     */
+    public function removeContact(Contact $contact) {
+        if (!$this->contacts->contains($contact)) {
+            return;
+        }
+        $this->contacts->removeElement($contact);
+    }
+    
+    /**
+     * Get user's agencies
+     * 
+     * @return \Doctrine\Common\Collections\Collection|Agency[]
+     */
+    public function getAgencies() {
+        return $this->agencies;
     }
 }

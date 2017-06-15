@@ -4,6 +4,7 @@ namespace CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use AdminBundle\Entity\State;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Client
@@ -85,11 +86,19 @@ class Contact {
      * @ORM\Column(name="active", type="boolean", options={"default" : false})
      */
     private $active;
+    
+    /**
+     * @var \Doctrine\Common\Collections\Collection|BusinessWorker[]
+     *
+     * @ORM\ManyToMany(targetEntity="BusinessWorker", mappedBy="contacts")
+     */
+    private $contactees;
 
     /**
      * Constructor for Contact
      */
     public function __construct() {
+        $this->contactees = new ArrayCollection();
     }
     
     /**
@@ -295,5 +304,14 @@ class Contact {
      */
     public function isActive() {
         return $this->active;
+    }
+    
+    /**
+     * Get all contactees
+     * 
+     * @return \Doctrine\Common\Collections\Collection|SystemWorker[]
+     */
+    public function getContactees() {
+        return $this->contactees;
     }
 }

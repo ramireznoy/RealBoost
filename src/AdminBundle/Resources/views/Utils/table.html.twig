@@ -70,7 +70,7 @@
                 <h4 class="modal-title" id="modal-title"></h4>
             </div>
             <div class="modal-body">
-                <div id="modal-alert" class="alert alert-danger hidden">Así quedaría</div>
+                <div id="modal-alert" class="alert alert-danger hidden"></div>
                 <div id="modal-body"></div>
             </div>
             <div class="modal-footer">
@@ -257,8 +257,8 @@
             }
 
             function updateNew() {
-                ajaxloader(active_view);
                 hideModal();
+                ajaxloader(active_view);
             }
             
             function errorNew(resp) {

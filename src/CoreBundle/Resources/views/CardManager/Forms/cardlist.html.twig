@@ -1,0 +1,25 @@
+<form class="form-horizontal" method="post">
+    {% for item in templates %}
+        <div class="form-group">
+            <label class="col-md-3 control-label">
+                <input id="{{item.id}}" class="magic-radio" type="radio" name="template" value="{{ item.id }}">
+                <label for="{{item.id}}"></label>
+            </label>
+            <label class="col-md-9" for="{{item.id}}">
+                <div class="text-bold">{{item.name}}</div>
+                <div class="text-muted">{{item.description}}</div>
+                <div>
+                    <img src="{{ asset('assets/virtualcards/' ~ item.name ~ '/thumbnail.png') }}"/>
+                </div>
+            </label>
+        </div>
+    {% endfor %}
+    {% if model is defined %}
+        <input value="{{ model.id }}" name="id" type="hidden">
+    {% endif %}
+</form>
+<script>
+    $(document).ready(function () {
+        
+    });
+</script>

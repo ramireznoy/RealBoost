@@ -135,4 +135,6 @@ class ViewsController extends Controller {
             return $this->render('AdminBundle:Admin:error.html.twig', array('cause' => $ex->getMessage()));
         }
     }
+    
+    
 }

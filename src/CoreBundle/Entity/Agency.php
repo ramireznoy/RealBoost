@@ -84,9 +84,9 @@ class Agency extends SystemUser {
     private $templates;
     
     /**
-     * @var \Doctrine\Common\Collections\Collection|Contact[]
+     * @var \Doctrine\Common\Collections\Collection|BusinessWorker[]
      *
-     * @ORM\ManyToMany(targetEntity="Contact", cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity="BusinessWorker", cascade={"persist", "remove"})
      * @ORM\JoinTable(name="relation_agency_businessworkers",
      *      joinColumns={@ORM\JoinColumn(name="agency_id", referencedColumnName="id", onDelete="cascade")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="businessworker_id", referencedColumnName="id", onDelete="cascade")}

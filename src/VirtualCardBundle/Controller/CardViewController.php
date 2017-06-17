@@ -30,7 +30,6 @@ class CardViewController extends Controller
             $theme = $templates[0];
             return $this->render('VirtualCardBundle:Cards:'.$theme->getName().'/index.html.twig', array('user' => $user));            
         } catch(\Exception $ex) {
-            echo $ex->getMessage();die();
             return $this->redirectToRoute('frontend_home');
         }
     }

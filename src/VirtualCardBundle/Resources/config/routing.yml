@@ -1,3 +1,6 @@
+#
+# Public access
+#
 virtual_card_public_redirect:
     path:     /
     defaults: { _controller: VirtualCardBundle:CardView:publicRedirect }

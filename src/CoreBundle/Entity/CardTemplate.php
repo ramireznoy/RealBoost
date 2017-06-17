@@ -49,7 +49,7 @@ class CardTemplate {
      * @ORM\ManyToMany(targetEntity="BusinessWorker", mappedBy="templates")
      */
     private $users;
-    
+
     /**
      * @var \Doctrine\Common\Collections\Collection|Agency[]
      *
@@ -156,5 +156,14 @@ class CardTemplate {
      */
     public function getAgencies() {
         return $this->agencies;
+    }
+    
+    /**
+     * Get Thumbnail path
+     * 
+     * @return string
+     */
+    public function getThumbnail() {
+        return "Test";
     }
 }

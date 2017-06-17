@@ -61,4 +61,5 @@ security:
         - { path: ^/card, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         # Temporary, must be switched with the backend access
         - { path: ^/home, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/, roles: [IS_AUTHENTICATED_FULLY,IS_AUTHENTICATED_REMEMBERED], requires_channel: https }
+        - { path: ^/cardmanager, roles: IS_AUTHENTICATED_REMEMBERED, requires_channel: https }
+        - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED, requires_channel: https }

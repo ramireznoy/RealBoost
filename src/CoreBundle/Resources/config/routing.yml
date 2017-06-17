@@ -1,3 +1,13 @@
-api_homepage:
+#
+# Admin access
+#
+vcard_manager:
     path:     /
-    defaults: { _controller: ApiBundle:Default:index }
+    defaults: { _controller: CoreBundle:CardManagerViews:index }
+    
+vcard_create_card_form:
+    path:     /create_card_form
+    defaults: { _controller: CoreBundle:CardManagerViews:createCardForm }
+vcard_create_card:
+    path:     /create_card
+    defaults: { _controller: CoreBundle:CardManager:createCard }    

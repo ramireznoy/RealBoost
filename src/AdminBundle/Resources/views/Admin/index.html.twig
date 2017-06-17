@@ -256,30 +256,30 @@
 
         function ajaxsubmit(form, successcb, unsuccesscb, errorcb) {
             var url = $(form).attr('action');
-            var data = {};
-            $(form).find('input, select, textarea').each(
+            var data = JSON.parse(JSON.stringify($(form).serializeArray())); // convert to json object
+            /*$(form).find('input, select, textarea').each(
                     function () {
                         var input = $(this);
                         data[input.attr('name')] = input.val();
                     }
-            );
+            );*/
             $.ajax({
                 url: url,
                 method: 'POST',
                 data: data,
                 success: function (resp) {
                     if (resp.success) {
-                        $.niftyNoty({
+                        /*$.niftyNoty({
                             type: 'success',
                             message: resp.message,
                             container: 'floating',
                             timer: 5000
-                        });
+                        });*/
                         $(window).scrollTop(0);
                         $(form).trigger('reset');
                         if (successcb !== null) {
                             if (resp.newrow !== null) {
-                                successcb(resp.newrow);
+                                successcb(resp.message);
                             } else {
                                 successcb();
                             }
@@ -292,7 +292,7 @@
                          timer : 5000
                          });*/
                         if (unsuccesscb !== null) {
-                            unsuccesscb(resp);
+                            unsuccesscb(resp.msg);
                         }
                     }
                 },
